@@ -2,6 +2,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
+import { StatusBadge } from '@/components/status-badge';
 import type { Report } from '@/src/domain/entities/report';
 
 type ReportListItemProps = Report;
@@ -35,10 +36,7 @@ export function ReportListItem({
       </View>
 
       <View style={styles.meta}>
-        <View style={styles.statusBadge}>
-          <Ionicons name="checkmark-circle" size={12} color="#16a34a" />
-          <Text style={styles.statusText}>{status}</Text>
-        </View>
+        <StatusBadge status={status} size="sm" />
         <View style={styles.dateRow}>
           <Ionicons name="calendar-outline" size={12} color={iconColor} />
           <Text style={[styles.dateText, { color: iconColor }]}>{date}</Text>
@@ -85,20 +83,6 @@ const styles = StyleSheet.create({
   meta: {
     alignItems: 'flex-end',
     gap: 6,
-  },
-  statusBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 3,
-    backgroundColor: '#dcfce7',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 5,
-  },
-  statusText: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: '#16a34a',
   },
   dateRow: {
     flexDirection: 'row',

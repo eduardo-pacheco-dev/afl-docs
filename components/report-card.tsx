@@ -1,8 +1,8 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useThemeColor } from '@/hooks/use-theme-color';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
+import { StatusBadge } from '@/components/status-badge';
 import type { Report } from '@/src/domain/entities/report';
 
 type ReportCardProps = Report;
@@ -35,11 +35,7 @@ export function ReportCard({
           <Text style={[styles.subtitle, { color: iconColor }]}>{subtitle}</Text>
 
           <View style={styles.metaRow}>
-            <View style={styles.statusBadge}>
-              <Ionicons name="checkmark-circle" size={14} color="#16a34a" />
-              <Text style={styles.statusText}>{status}</Text>
-            </View>
-
+            <StatusBadge status={status} />
             <View style={styles.dateRow}>
               <Ionicons name="calendar-outline" size={14} color={iconColor} />
               <Text style={[styles.dateText, { color: iconColor }]}>{date}</Text>
@@ -117,20 +113,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     marginTop: 6,
-  },
-  statusBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    backgroundColor: '#dcfce7',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#16a34a',
   },
   dateRow: {
     flexDirection: 'row',

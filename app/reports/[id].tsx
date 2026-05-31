@@ -6,6 +6,7 @@ import { ReportDetailHeader } from '@/components/report-detail-header';
 import { ReportStatusFilter } from '@/components/report-status-filter';
 import { ReportForm } from '@/components/form/report-form';
 import { Report } from '@/src/domain/entities/report';
+import { statusConfig } from '@/constants/status';
 import { ReportApiDataSource } from '@/src/data/datasources/report-api-datasource';
 import { ReportLocalDataSource } from '@/src/data/datasources/report-datasource';
 import { ReportRepositoryImpl } from '@/src/data/repositories/report-repository-impl';
@@ -22,11 +23,8 @@ export default function ReportDetailScreen() {
   const navigation = useNavigation();
 
   const formStatuses = useMemo(() => {
-    if (!report) return [];
-    const set = new Set<string>();
-    report.forms.forEach((s) => s.questions.forEach((q) => { if (q.status) set.add(q.status); }));
-    return Array.from(set);
-  }, [report]);
+    return Object.keys(statusConfig);
+  }, []);
 
   useEffect(() => {
     if (id) getReportByIdUseCase.execute(id).then(setReport);

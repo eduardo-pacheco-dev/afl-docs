@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
 import { ReportCard } from '@/components/report-card';
 import { ReportListItem } from '@/components/report-list-item';
 import { Report } from '@/src/domain/entities/report';
-import { ReportApiDataSource } from '@/src/data/datasources/report-api-datasource';
+import { ReportLocalDataSource } from '@/src/data/datasources/report-datasource';
 import { ReportRepositoryImpl } from '@/src/data/repositories/report-repository-impl';
 import { GetReportsUseCase } from '@/src/domain/usecases/get-reports';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -14,7 +14,7 @@ import { Colors } from '@/constants/theme';
 
 type ViewMode = 'card' | 'list';
 
-const dataSource = new ReportApiDataSource();
+const dataSource = new ReportLocalDataSource();
 const repository = new ReportRepositoryImpl(dataSource);
 const getReportsUseCase = new GetReportsUseCase(repository);
 
@@ -106,9 +106,20 @@ export default function ReportsListScreen() {
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
+        contentContainerStyle={[styles.list, reports.length === 0 && styles.listEmpty]}
         renderItem={renderItem}
         keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={
+          <View style={styles.empty}>
+            <View style={[styles.emptyIcon, { backgroundColor: inputBg }]}>
+              <Ionicons name="document-text-outline" size={40} color={inactiveColor} />
+            </View>
+            <Text style={[styles.emptyTitle, { color: inputColor }]}>Nenhum relatório</Text>
+            <Text style={[styles.emptyDesc, { color: inactiveColor }]}>
+              Use o código de acesso na página inicial para adicionar relatórios.
+            </Text>
+          </View>
+        }
       />
     </ThemedView>
   );
@@ -157,5 +168,31 @@ const styles = StyleSheet.create({
   list: {
     padding: 16,
     gap: 12,
+  },
+  listEmpty: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  empty: {
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 32,
+  },
+  emptyIcon: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+  },
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  emptyDesc: {
+    fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 20,
   },
 });

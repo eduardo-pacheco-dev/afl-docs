@@ -7,6 +7,7 @@ function getDefaultReports(): Report[] {
   return [
     {
       id: '1',
+      hash: 'A1B2C3',
       title: 'SN-PRAC1 - Auditoria EHS',
       subtitle: 'NOKIA',
       initials: 'SN',
@@ -45,6 +46,7 @@ function getDefaultReports(): Report[] {
     },
     {
       id: '2',
+      hash: 'D4E5F6',
       title: 'CT-ALPHA01 – Inspeção de Segurança',
       subtitle: 'ALPHA',
       initials: 'CT',
@@ -70,6 +72,7 @@ function getDefaultReports(): Report[] {
     },
     {
       id: '3',
+      hash: 'G7H8I9',
       title: 'RF-BETA02 – Auditoria Ambiental',
       subtitle: 'BETA LTDA',
       initials: 'RF',
@@ -86,6 +89,7 @@ function getDefaultReports(): Report[] {
     },
     {
       id: '4',
+      hash: 'J0K1L2',
       title: 'MK-GAMMA03 – Revisão de Processos',
       subtitle: 'GAMMA S.A.',
       initials: 'MK',
@@ -110,6 +114,7 @@ function getDefaultReports(): Report[] {
     },
     {
       id: '5',
+      hash: 'M3N4O5',
       title: 'PL-DELTA04 – Diagnóstico EHS',
       subtitle: 'DELTA IND.',
       initials: 'PL',
@@ -144,7 +149,7 @@ function getDefaultReports(): Report[] {
 
 function isValidReport(data: unknown): data is Report[] {
   if (!Array.isArray(data) || data.length === 0) return false;
-  return 'responsible' in data[0] && 'progress' in data[0] && 'forms' in data[0];
+  return 'responsible' in data[0] && 'progress' in data[0] && 'forms' in data[0] && 'hash' in data[0];
 }
 
 export interface ReportDataSource {
@@ -158,23 +163,18 @@ export interface ReportDataSource {
 export class ReportLocalDataSource implements ReportDataSource {
   async getReports(): Promise<Report[]> {
     const data = await AsyncStorage.getItem(REPORTS_KEY);
-    if (!data) {
-      const defaults = getDefaultReports();
-      await AsyncStorage.setItem(REPORTS_KEY, JSON.stringify(defaults));
-      return defaults;
-    }
-
-    const parsed = JSON.parse(data);
-    if (isValidReport(parsed)) return parsed;
-
-    const defaults = getDefaultReports();
-    await AsyncStorage.setItem(REPORTS_KEY, JSON.stringify(defaults));
-    return defaults;
+    if (!data) return [];
+    return JSON.parse(data);
   }
 
   async getReportById(id: string): Promise<Report | null> {
     const reports = await this.getReports();
     return reports.find((r) => r.id === id) ?? null;
+  }
+
+  async getReportByHash(hash: string): Promise<Report | null> {
+    const reports = await this.getReports();
+    return reports.find((r) => r.hash === hash) ?? null;
   }
 
   async saveReport(report: Report): Promise<void> {

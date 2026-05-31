@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
+import { getStatusConfig } from '@/constants/status';
 import { FormSubmitButton } from '../../form-submit-button';
 
 export type FormFile = {
@@ -63,8 +64,8 @@ export function FormFileQuestion({ title, status, description, accept, files, on
       <View style={styles.header}>
         <Text style={[styles.title, { color: textColor }]}>{title}</Text>
         {status && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{status}</Text>
+          <View style={[styles.badge, { backgroundColor: getStatusConfig(status).bg }]}>
+            <Text style={[styles.badgeText, { color: getStatusConfig(status).text }]}>{status}</Text>
           </View>
         )}
       </View>

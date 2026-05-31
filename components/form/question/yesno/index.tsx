@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
+import { getStatusConfig } from '@/constants/status';
 import { FormSubmitButton } from '../../form-submit-button';
 
 type BinarySegmentedControlProps = {
@@ -26,8 +27,8 @@ export function BinarySegmentedControl({ title, status, description, value, onCh
       <View style={styles.header}>
         <Text style={[styles.title, { color: textColor }]}>{title}</Text>
         {status && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{status}</Text>
+          <View style={[styles.badge, { backgroundColor: getStatusConfig(status).bg }]}>
+            <Text style={[styles.badgeText, { color: getStatusConfig(status).text }]}>{status}</Text>
           </View>
         )}
       </View>

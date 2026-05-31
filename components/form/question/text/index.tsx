@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
+import { getStatusConfig } from '@/constants/status';
 import { FormSubmitButton } from '../../form-submit-button';
 
 type FormTextQuestionProps = {
@@ -25,8 +26,8 @@ export function FormTextQuestion({ title, status, description, placeholder, valu
       <View style={styles.header}>
         <Text style={[styles.title, { color: textColor }]}>{title}</Text>
         {status && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{status}</Text>
+          <View style={[styles.badge, { backgroundColor: getStatusConfig(status).bg }]}>
+            <Text style={[styles.badgeText, { color: getStatusConfig(status).text }]}>{status}</Text>
           </View>
         )}
       </View>

@@ -3,6 +3,7 @@ import { Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
 import { FormQuestion } from '@/src/domain/entities/report';
+import { getStatusConfig } from '@/constants/status';
 import { FormPhotoThumb } from './form-photo-thumb';
 import { FormUploadActions } from './form-upload-actions';
 import { FormSubmitButton } from '../../form-submit-button';
@@ -65,8 +66,8 @@ export function FormPhotoQuestion({
       <View style={styles.header}>
         <Text style={[styles.title, { color: textColor }]}>{question.title}</Text>
         {question.status && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{question.status}</Text>
+          <View style={[styles.badge, { backgroundColor: getStatusConfig(question.status).bg }]}>
+            <Text style={[styles.badgeText, { color: getStatusConfig(question.status).text }]}>{question.status}</Text>
           </View>
         )}
       </View>

@@ -1,11 +1,11 @@
 export const statusConfig: Record<string, { bg: string; text: string; icon: string; iconName: string }> = {
-  'Concluído': {
+  'Aprovado': {
     bg: '#dcfce7',
     text: '#16a34a',
     icon: '#16a34a',
     iconName: 'checkmark-circle',
   },
-  'Em andamento': {
+  'Em avaliação': {
     bg: '#fef9c3',
     text: '#ca8a04',
     icon: '#ca8a04',

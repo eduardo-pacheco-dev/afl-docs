@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, Platform, StyleSheet } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
@@ -15,12 +15,17 @@ const localRepository = new ReportRepositoryImpl(new ReportLocalDataSource());
 const apiRepository = new ReportRepositoryImpl(new ReportApiDataSource());
 const getReportByIdUseCase = new GetReportByIdUseCase(localRepository);
 
-const allStatuses = ['Concluído', 'Em andamento', 'Pendente', 'Reprovado'];
-
 export default function ReportDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [report, setReport] = useState<Report | null>(null);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+
+  const formStatuses = useMemo(() => {
+    if (!report) return [];
+    const set = new Set<string>();
+    report.forms.forEach((s) => s.questions.forEach((q) => { if (q.status) set.add(q.status); }));
+    return Array.from(set);
+  }, [report]);
 
   useEffect(() => {
     if (id) getReportByIdUseCase.execute(id).then(setReport);
@@ -84,11 +89,11 @@ export default function ReportDetailScreen() {
     <ThemedView style={styles.container}>
       <ReportDetailHeader report={report} syncing={syncing} onSync={handleSync} onDelete={handleDelete} onArchive={handleArchive} />
       <ReportStatusFilter
-        statuses={allStatuses}
+        statuses={formStatuses}
         selected={selectedStatuses}
         onToggle={toggleStatus}
       />
-      <ReportForm reportId={id} sections={report.forms} />
+      <ReportForm reportId={id} sections={report.forms} selectedStatuses={selectedStatuses} />
     </ThemedView>
   );
 }

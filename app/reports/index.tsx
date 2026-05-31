@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
 import { ReportCard } from '@/components/report-card';
 import { ReportListItem } from '@/components/report-list-item';
+import { ReportStatusFilter } from '@/components/report-status-filter';
 import { Report } from '@/src/domain/entities/report';
 import { ReportLocalDataSource } from '@/src/data/datasources/report-datasource';
 import { ReportRepositoryImpl } from '@/src/data/repositories/report-repository-impl';
@@ -24,6 +25,7 @@ export default function ReportsListScreen() {
   const [search, setSearch] = useState('');
   const [viewMode, setViewMode] = useState<ViewMode>('card');
   const [refreshing, setRefreshing] = useState(false);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
 
   const loadReports = useCallback(async () => {
     const data = await getReportsUseCase.execute();
@@ -41,17 +43,34 @@ export default function ReportsListScreen() {
   }, [loadReports]);
 
   const filtered = useMemo(() => {
-    if (!search.trim()) return reports;
-    const q = search.toLowerCase();
-    return reports.filter(
-      (r) =>
-        r.title.toLowerCase().includes(q) ||
-        r.subtitle.toLowerCase().includes(q) ||
-        r.auditor.toLowerCase().includes(q) ||
-        r.executor.toLowerCase().includes(q) ||
-        r.client.toLowerCase().includes(q),
+    let result = reports;
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (r) =>
+          r.title.toLowerCase().includes(q) ||
+          r.subtitle.toLowerCase().includes(q) ||
+          r.auditor.toLowerCase().includes(q) ||
+          r.executor.toLowerCase().includes(q) ||
+          r.client.toLowerCase().includes(q),
+      );
+    }
+    if (selectedStatuses.length > 0) {
+      result = result.filter((r) => selectedStatuses.includes(r.status));
+    }
+    return result;
+  }, [search, reports, selectedStatuses]);
+
+  const statuses = useMemo(() => {
+    const set = new Set(reports.map((r) => r.status));
+    return Array.from(set);
+  }, [reports]);
+
+  const toggleStatus = useCallback((status: string) => {
+    setSelectedStatuses((prev) =>
+      prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status],
     );
-  }, [search, reports]);
+  }, []);
 
   const renderItem = useCallback(
     ({ item }: { item: Report }) => {
@@ -114,6 +133,8 @@ export default function ReportsListScreen() {
           </TouchableOpacity>
         </View>
       </View>
+
+      <ReportStatusFilter statuses={statuses} selected={selectedStatuses} onToggle={toggleStatus} />
 
       <FlatList
         data={filtered}

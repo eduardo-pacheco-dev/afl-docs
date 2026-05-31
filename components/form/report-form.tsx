@@ -34,9 +34,10 @@ function addPhotoToState(
 type ReportFormProps = {
   reportId?: string;
   sections?: FormSectionType[];
+  selectedStatuses?: string[];
 };
 
-export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
+export function ReportForm({ reportId = '', sections = [], selectedStatuses = [] }: ReportFormProps) {
   const theme = useColorScheme() ?? 'light';
   const [expandedSections, setExpandedSections] = useState<Record<number, boolean>>({ 0: true });
   const [textAnswers, setTextAnswers] = useState<Record<string, string>>({});
@@ -114,9 +115,17 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: bgColor }]} contentContainerStyle={styles.content}>
-      {sections.map((section, sIdx) => (
-        <FormSection key={sIdx} title={section.title} expanded={expandedSections[sIdx] ?? false} onToggle={() => toggleSection(sIdx)}>
-          {section.questions.map((q, qIdx) => {
+      {sections.map((section, sIdx) => {
+        const filteredQuestions = selectedStatuses.length
+          ? section.questions.filter((q) => q.status && selectedStatuses.includes(q.status))
+          : section.questions;
+        if (selectedStatuses.length && !filteredQuestions.length) return null;
+
+        return (
+          <FormSection key={sIdx} title={section.title} expanded={expandedSections[sIdx] ?? false} onToggle={() => toggleSection(sIdx)}>
+            {section.questions.map((q, qIdx) => {
+            if (selectedStatuses.length && (!q.status || !selectedStatuses.includes(q.status))) return null;
+
             const qKey = `${sIdx}-${qIdx}`;
             const sectionPhotos = photos[qKey] ?? [];
 
@@ -191,7 +200,7 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
             );
           })}
         </FormSection>
-      ))}
+      )})}
       <FormSubmitButton onPress={handleSubmit} label="Enviar Todos" />
     </ScrollView>
   );

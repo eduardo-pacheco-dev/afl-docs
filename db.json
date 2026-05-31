@@ -6,7 +6,7 @@
       "title": "SN-PRAC1 - Auditoria EHS",
       "subtitle": "NOKIA",
       "initials": "SN",
-      "status": "Concluído",
+      "status": "Aprovado",
       "date": "25/05/2026",
       "auditor": "Eduardo Pacheco",
       "executor": "Higo Oliveira",
@@ -19,18 +19,18 @@
         {
           "title": "TÉCNICO 1",
           "questions": [
-            { "type": "photo", "title": "Foto do capacete", "status": "Aguardando", "description": "Tire uma foto do capacete de segurança utilizado pelo técnico.", "examples": ["https://picsum.photos/600/600?random=1","https://picsum.photos/600/600?random=5"] },
+            { "type": "photo", "title": "Foto do capacete", "status": "Em avaliação", "description": "Tire uma foto do capacete de segurança utilizado pelo técnico.", "examples": ["https://picsum.photos/600/600?random=1","https://picsum.photos/600/600?random=5"] },
             { "type": "text", "title": "Observações técnicas", "description": "Registre detalhes relevantes sobre as condições de segurança observadas durante a visita técnica.", "placeholder": "Descreva as condições observadas..." },
             { "type": "yesno", "title": "Técnico utilizou EPIs corretamente?", "status": "Pendente", "description": "O técnico estava fazendo uso correto de todos os equipamentos de proteção individual obrigatórios?" },
-            { "type": "checkbox", "title": "Ferramentas utilizadas", "status": "Concluído", "description": "Selecione as ferramentas que o técnico utilizou durante a execução dos serviços.", "options": ["Multímetro digital", "Câmera termográfica", "Medidor de tensão", "Alicate amperímetro", "Detector de gases"] }
+            { "type": "checkbox", "title": "Ferramentas utilizadas", "status": "Aprovado", "description": "Selecione as ferramentas que o técnico utilizou durante a execução dos serviços.", "options": ["Multímetro digital", "Câmera termográfica", "Medidor de tensão", "Alicate amperímetro", "Detector de gases"] }
           ]
         },
         {
           "title": "TÉCNICO 2",
           "questions": [
-            { "type": "photo", "title": "Foto da placa de obra", "status": "Aguardando", "description": "Registre a placa de identificação da obra com visibilidade total.", "examples": ["https://picsum.photos/600/600?random=2"] },
-            { "type": "photo", "title": "Foto do entorno", "status": "Aguardando", "description": "Capture uma vista panorâmica do entorno da obra.", "examples": ["https://picsum.photos/600/600?random=3"] },
-            { "type": "radio", "title": "Condição do local", "status": "Aguardando", "description": "Avalie a condição geral do local de trabalho do técnico.", "options": ["Adequada", "Regular", "Inadequada", "Crítica"] }
+            { "type": "photo", "title": "Foto da placa de obra", "status": "Em avaliação", "description": "Registre a placa de identificação da obra com visibilidade total.", "examples": ["https://picsum.photos/600/600?random=2"] },
+            { "type": "photo", "title": "Foto do entorno", "status": "Em avaliação", "description": "Capture uma vista panorâmica do entorno da obra.", "examples": ["https://picsum.photos/600/600?random=3"] },
+            { "type": "radio", "title": "Condição do local", "status": "Reprovado", "description": "Avalie a condição geral do local de trabalho do técnico.", "options": ["Adequada", "Regular", "Inadequada", "Crítica"] }
           ]
         },
         {
@@ -50,7 +50,7 @@
       "title": "CT-ALPHA01 – Inspeção de Segurança",
       "subtitle": "ALPHA",
       "initials": "CT",
-      "status": "Em andamento",
+      "status": "Em avaliação",
       "date": "28/05/2026",
       "auditor": "Maria Souza",
       "executor": "João Santos",
@@ -63,13 +63,13 @@
         {
           "title": "EPIs",
           "questions": [
-            { "type": "photo", "title": "Foto do capacete", "status": "Concluído", "description": "Registre o capacete sendo utilizado conforme as normas de segurança.", "examples": ["https://picsum.photos/600/600?random=5"] },
-            { "type": "photo", "title": "Foto do cinto de segurança", "status": "Aguardando", "description": "Fotografe o cinto de segurança tipo paraquedista corretamente afivelado.", "examples": ["https://picsum.photos/600/600?random=6"] },
+            { "type": "photo", "title": "Foto do capacete", "status": "Aprovado", "description": "Registre o capacete sendo utilizado conforme as normas de segurança.", "examples": ["https://picsum.photos/600/600?random=5"] },
+            { "type": "photo", "title": "Foto do cinto de segurança", "status": "Em avaliação", "description": "Fotografe o cinto de segurança tipo paraquedista corretamente afivelado.", "examples": ["https://picsum.photos/600/600?random=6"] },
             { "type": "text", "title": "Observações", "description": "Detalhe o estado de conservação e conformidade dos Equipamentos de Proteção Individual.", "placeholder": "Descreva o estado dos EPIs..." },
             { "type": "yesno", "title": "Cinto de segurança com certificação válida?", "status": "Pendente", "description": "O cinto de segurança tipo paraquedista possui certificação dentro do prazo de validade?" },
-            { "type": "checkbox", "title": "EPIs disponíveis no local", "status": "Concluído", "description": "Marque todos os EPIs que estavam disponíveis e em condições de uso no momento da vistoria.", "options": ["Capacete", "Cinto de segurança", "Luvas", "Óculos de proteção", "Protetor auricular", "Máscara respiratória"] },
+            { "type": "checkbox", "title": "EPIs disponíveis no local", "status": "Aprovado", "description": "Marque todos os EPIs que estavam disponíveis e em condições de uso no momento da vistoria.", "options": ["Capacete", "Cinto de segurança", "Luvas", "Óculos de proteção", "Protetor auricular", "Máscara respiratória"] },
             { "type": "radio", "title": "Nível de conformidade", "status": "Pendente", "description": "Classifique o nível de conformidade dos EPIs encontrados no local.", "options": ["Conforme", "Não conforme", "Não se aplica"] },
-            { "type": "file", "title": "Anexar certificados dos EPIs", "status": "Aguardando", "description": "Anexe os certificados de conformidade dos EPIs (CA, laudos, etc.)." }
+            { "type": "file", "title": "Anexar certificados dos EPIs", "status": "Em avaliação", "description": "Anexe os certificados de conformidade dos EPIs (CA, laudos, etc.)." }
           ]
         }
       ]
@@ -93,8 +93,8 @@
         {
           "title": "LICENÇAS",
           "questions": [
-            { "type": "yesno", "title": "Licença ambiental vigente?", "status": "Aguardando", "description": "A empresa possui licença ambiental emitida pelo órgão competente dentro do prazo de validade?" },
-            { "type": "yesno", "title": "Relatório de emissões em dia?", "status": "Aguardando", "description": "O relatório de emissões atmosféricas foi entregue dentro do prazo regulamentar?" },
+            { "type": "yesno", "title": "Licença ambiental vigente?", "status": "Em avaliação", "description": "A empresa possui licença ambiental emitida pelo órgão competente dentro do prazo de validade?" },
+            { "type": "yesno", "title": "Relatório de emissões em dia?", "status": "Em avaliação", "description": "O relatório de emissões atmosféricas foi entregue dentro do prazo regulamentar?" },
             { "type": "checkbox", "title": "Aspectos ambientais avaliados", "status": "Pendente", "description": "Selecione os aspectos ambientais que foram avaliados durante a auditoria.", "options": ["Emissões atmosféricas", "Efluentes líquidos", "Resíduos sólidos", "Ruído ambiental", "Recursos hídricos", "Fauna e flora"] }
           ]
         }
@@ -106,7 +106,7 @@
       "title": "MK-GAMMA03 – Revisão de Processos",
       "subtitle": "GAMMA S.A.",
       "initials": "MK",
-      "status": "Concluído",
+      "status": "Aprovado",
       "date": "20/05/2026",
       "auditor": "Fernanda Rocha",
       "executor": "Pedro Alves",
@@ -120,8 +120,8 @@
           "title": "PROCESSOS",
           "questions": [
             { "type": "text", "title": "Nome do processo revisado", "description": "Informe o código e a versão do processo que foi revisado nesta auditoria.", "placeholder": "Ex: P-001/2026" },
-            { "type": "yesno", "title": "Processo aprovado sem ressalvas?", "status": "Concluído", "description": "O processo revisado atende a todos os requisitos sem necessidade de ajustes ou correções?" },
-            { "type": "checkbox", "title": "Documentos revisados", "status": "Concluído", "description": "Marque os documentos que foram revisados e validados durante esta auditoria.", "options": ["Procedimento operacional", "Instrução de trabalho", "Checklist de qualidade", "Registro de não conformidade", "Plano de ação corretiva"] },
+            { "type": "yesno", "title": "Processo aprovado sem ressalvas?", "status": "Aprovado", "description": "O processo revisado atende a todos os requisitos sem necessidade de ajustes ou correções?" },
+            { "type": "checkbox", "title": "Documentos revisados", "status": "Aprovado", "description": "Marque os documentos que foram revisados e validados durante esta auditoria.", "options": ["Procedimento operacional", "Instrução de trabalho", "Checklist de qualidade", "Registro de não conformidade", "Plano de ação corretiva"] },
             { "type": "photo", "title": "Evidência fotográfica", "description": "Anexe uma foto que comprove a execução do processo revisado.", "examples": ["https://picsum.photos/600/600?random=7"] }
           ]
         }
@@ -133,7 +133,7 @@
       "title": "PL-DELTA04 – Diagnóstico EHS",
       "subtitle": "DELTA IND.",
       "initials": "PL",
-      "status": "Em andamento",
+      "status": "Em avaliação",
       "date": "30/05/2026",
       "auditor": "Eduardo Pacheco",
       "executor": "Luciana Torres",
@@ -146,11 +146,11 @@
         {
           "title": "SEGURANÇA",
           "questions": [
-            { "type": "photo", "title": "Foto da sinalização", "status": "Aguardando", "description": "Registre as placas de sinalização de segurança do local.", "examples": ["https://picsum.photos/600/600?random=8"] },
-            { "type": "photo", "title": "Foto do extintor", "status": "Aguardando", "description": "Fotografe o extintor com o lacre e a data de validade visíveis.", "examples": ["https://picsum.photos/600/600?random=9"] },
+            { "type": "photo", "title": "Foto da sinalização", "status": "Em avaliação", "description": "Registre as placas de sinalização de segurança do local.", "examples": ["https://picsum.photos/600/600?random=8"] },
+            { "type": "photo", "title": "Foto do extintor", "status": "Em avaliação", "description": "Fotografe o extintor com o lacre e a data de validade visíveis.", "examples": ["https://picsum.photos/600/600?random=9"] },
             { "type": "text", "title": "Observações de segurança", "description": "Descreva as condições de segurança observadas, incluindo riscos identificados e ações corretivas.", "placeholder": "Descreva as condições..." },
-            { "type": "yesno", "title": "Extintores com validade em dia?", "status": "Aguardando", "description": "Todos os extintores presentes no local possuem lacre íntegro e data de validade vigente?" },
-            { "type": "checkbox", "title": "Riscos identificados", "status": "Aguardando", "description": "Selecione os riscos identificados durante a vistoria de segurança.", "options": ["Risco elétrico", "Risco de queda", "Risco químico", "Risco mecânico", "Risco biológico", "Risco ergonômico"] }
+            { "type": "yesno", "title": "Extintores com validade em dia?", "status": "Reprovado", "description": "Todos os extintores presentes no local possuem lacre íntegro e data de validade vigente?" },
+            { "type": "checkbox", "title": "Riscos identificados", "status": "Em avaliação", "description": "Selecione os riscos identificados durante a vistoria de segurança.", "options": ["Risco elétrico", "Risco de queda", "Risco químico", "Risco mecânico", "Risco biológico", "Risco ergonômico"] }
           ]
         },
         {

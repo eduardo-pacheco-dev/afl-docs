@@ -49,13 +49,26 @@ export function ReportForm() {
     setTextAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
+  const addPhoto = (key: string, uri: string) => {
+    setPhotos((prev) => ({ ...prev, [key]: [...(prev[key] ?? []), { uri, synced: false }] }));
+  };
+
   const pickImage = async (sectionIdx: number, qIdx: number) => {
     const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], quality: 0.8 });
     if (!result.canceled) {
-      const key = `${sectionIdx}-${qIdx}`;
-      const newPhoto: Photo = { uri: result.assets[0].uri, synced: false };
-      setPhotos((prev) => ({ ...prev, [key]: [...(prev[key] ?? []), newPhoto] }));
+      addPhoto(`${sectionIdx}-${qIdx}`, result.assets[0].uri);
     }
+  };
+
+  const takePhoto = async (sectionIdx: number, qIdx: number) => {
+    const result = await ImagePicker.launchCameraAsync({ quality: 0.8 });
+    if (!result.canceled) {
+      addPhoto(`${sectionIdx}-${qIdx}`, result.assets[0].uri);
+    }
+  };
+
+  const addNAPhoto = (sectionIdx: number, qIdx: number) => {
+    addPhoto(`${sectionIdx}-${qIdx}`, 'na');
   };
 
   const removePhoto = (sectionIdx: number, qIdx: number, photoIdx: number) => {
@@ -136,7 +149,13 @@ export function ReportForm() {
                               <View style={styles.photoGrid}>
                                 {sectionPhotos.map((photo, pIdx) => (
                                   <View key={pIdx} style={styles.photoThumb}>
-                                    <Image source={{ uri: photo.uri }} style={styles.photoImage} />
+                                    {photo.uri === 'na' ? (
+                                      <View style={[styles.naThumb, { backgroundColor: inputBg, borderColor }]}>
+                                        <Text style={[styles.naText, { color: mutedColor }]}>N/A</Text>
+                                      </View>
+                                    ) : (
+                                      <Image source={{ uri: photo.uri }} style={styles.photoImage} />
+                                    )}
                                     <TouchableOpacity
                                       style={styles.deleteBtn}
                                       onPress={() => removePhoto(sIdx, qIdx, pIdx)}
@@ -154,14 +173,32 @@ export function ReportForm() {
                             </View>
                           )}
 
-                          <TouchableOpacity
-                            style={[styles.uploadBtn, { borderColor: dashedBorder }]}
-                            onPress={() => pickImage(sIdx, qIdx)}
-                            activeOpacity={0.7}
-                          >
-                            <Ionicons name="images-outline" size={32} color={mutedColor} />
-                            <Text style={[styles.uploadText, { color: mutedColor }]}>Galeria</Text>
-                          </TouchableOpacity>
+                          <View style={styles.uploadRow}>
+                            <TouchableOpacity
+                              style={[styles.uploadBtn, { borderColor: dashedBorder }]}
+                              onPress={() => pickImage(sIdx, qIdx)}
+                              activeOpacity={0.7}
+                            >
+                              <Ionicons name="images-outline" size={28} color={mutedColor} />
+                              <Text style={[styles.uploadText, { color: mutedColor }]}>Galeria</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              style={[styles.uploadBtn, { borderColor: dashedBorder }]}
+                              onPress={() => takePhoto(sIdx, qIdx)}
+                              activeOpacity={0.7}
+                            >
+                              <Ionicons name="camera-outline" size={28} color={mutedColor} />
+                              <Text style={[styles.uploadText, { color: mutedColor }]}>Câmera</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              style={[styles.uploadBtn, { borderColor: dashedBorder }]}
+                              onPress={() => addNAPhoto(sIdx, qIdx)}
+                              activeOpacity={0.7}
+                            >
+                              <Ionicons name="close-outline" size={28} color={mutedColor} />
+                              <Text style={[styles.uploadText, { color: mutedColor }]}>N/A</Text>
+                            </TouchableOpacity>
+                          </View>
                         </View>
                       )}
                     </View>
@@ -297,17 +334,34 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 2,
   },
+  uploadRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
   uploadBtn: {
+    flex: 1,
     borderWidth: 2,
     borderStyle: 'dashed',
     borderRadius: 12,
-    padding: 24,
+    paddingVertical: 18,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
   },
   uploadText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
+  },
+  naThumb: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  naText: {
+    fontSize: 16,
+    fontWeight: '700',
   },
 });

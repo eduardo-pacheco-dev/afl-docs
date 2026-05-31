@@ -23,6 +23,8 @@ export function FormRadioQuestion({ title, status, description, options, value, 
   const tint = Colors[theme].tint;
   const selectedBg = theme === 'dark' ? '#1a2e3a' : '#f0f9ff';
   const selectedBorder = theme === 'dark' ? '#0a7ea4' : tint;
+  const showSubmit = status !== 'Em avaliação' && status !== 'Aprovado';
+  const readOnly = !showSubmit;
 
   return (
     <View style={styles.block}>
@@ -44,6 +46,7 @@ export function FormRadioQuestion({ title, status, description, options, value, 
             style={[styles.option, { backgroundColor: inputBg }, selected && { backgroundColor: selectedBg, borderColor: selectedBorder }]}
             activeOpacity={0.7}
             onPress={() => onChange(opt)}
+            disabled={readOnly}
           >
             <Ionicons
               name={selected ? 'radio-button-on' : 'radio-button-off'}
@@ -55,7 +58,7 @@ export function FormRadioQuestion({ title, status, description, options, value, 
         );
       })}
 
-      <FormSubmitButton onPress={onSubmit} />
+      {showSubmit && <FormSubmitButton onPress={onSubmit} />}
     </View>
   );
 }

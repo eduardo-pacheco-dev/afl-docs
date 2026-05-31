@@ -20,6 +20,8 @@ export function FormTextQuestion({ title, status, description, placeholder, valu
   const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
   const inputBg = theme === 'dark' ? '#2c2c2c' : '#f8f8f8';
   const borderColor = theme === 'dark' ? '#2c2c2c' : '#d1d1d6';
+  const showSubmit = status !== 'Em avaliação' && status !== 'Aprovado';
+  const readOnly = !showSubmit;
 
   return (
     <View style={styles.block}>
@@ -39,8 +41,9 @@ export function FormTextQuestion({ title, status, description, placeholder, valu
         value={value}
         onChangeText={onChange}
         multiline
+        readOnly={readOnly}
       />
-      <FormSubmitButton onPress={onSubmit} />
+      {showSubmit && <FormSubmitButton onPress={onSubmit} />}
     </View>
   );
 }

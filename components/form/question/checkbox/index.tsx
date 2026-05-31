@@ -22,6 +22,8 @@ export function FormCheckboxQuestion({ title, status, description, options, valu
   const inputBg = theme === 'dark' ? '#2c2c2c' : '#f8f8f8';
   const tint = Colors[theme].tint;
   const selectedBg = theme === 'dark' ? '#1a2e3a' : '#f0f9ff';
+  const showSubmit = status !== 'Em avaliação' && status !== 'Aprovado';
+  const readOnly = !showSubmit;
 
   const toggle = (opt: string) => {
     if (value.includes(opt)) {
@@ -51,6 +53,7 @@ export function FormCheckboxQuestion({ title, status, description, options, valu
             style={[styles.option, { backgroundColor: inputBg }, checked && { backgroundColor: selectedBg }]}
             activeOpacity={0.7}
             onPress={() => toggle(opt)}
+            disabled={readOnly}
           >
             <Ionicons
               name={checked ? 'checkbox' : 'square-outline'}
@@ -62,7 +65,7 @@ export function FormCheckboxQuestion({ title, status, description, options, valu
         );
       })}
 
-      <FormSubmitButton onPress={onSubmit} />
+      {showSubmit && <FormSubmitButton onPress={onSubmit} />}
     </View>
   );
 }

@@ -29,6 +29,8 @@ export function FormFileQuestion({ title, status, description, accept, files, on
   const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
   const inputBg = theme === 'dark' ? '#2c2c2c' : '#f8f8f8';
   const dashedBorder = theme === 'dark' ? '#3a3a3a' : '#c7c7cc';
+  const showSubmit = status !== 'Em avaliação' && status !== 'Aprovado';
+  const readOnly = !showSubmit;
 
   const pickFile = async () => {
     try {
@@ -71,10 +73,12 @@ export function FormFileQuestion({ title, status, description, accept, files, on
       </View>
       {description && <Text style={[styles.description, { color: mutedColor }]}>{description}</Text>}
 
-      <TouchableOpacity style={[styles.pickerArea, { borderColor: dashedBorder }]} onPress={pickFile} activeOpacity={0.7}>
-        <Ionicons name="cloud-upload-outline" size={36} color={mutedColor} />
-        <Text style={[styles.pickerText, { color: mutedColor }]}>Toque para selecionar arquivos</Text>
-      </TouchableOpacity>
+      {!readOnly && (
+        <TouchableOpacity style={[styles.pickerArea, { borderColor: dashedBorder }]} onPress={pickFile} activeOpacity={0.7}>
+          <Ionicons name="cloud-upload-outline" size={36} color={mutedColor} />
+          <Text style={[styles.pickerText, { color: mutedColor }]}>Toque para selecionar arquivos</Text>
+        </TouchableOpacity>
+      )}
 
       {files.length > 0 && (
         <View style={styles.fileList}>
@@ -85,15 +89,17 @@ export function FormFileQuestion({ title, status, description, accept, files, on
                 <Text style={[styles.fileName, { color: textColor }]} numberOfLines={1}>{file.name}</Text>
                 <Text style={[styles.fileSize, { color: mutedColor }]}>{formatSize(file.size)}</Text>
               </View>
-              <TouchableOpacity onPress={() => removeFile(i)} hitSlop={8}>
-                <Ionicons name="close-circle" size={22} color="#ff3b30" />
-              </TouchableOpacity>
+              {!readOnly && (
+                <TouchableOpacity onPress={() => removeFile(i)} hitSlop={8}>
+                  <Ionicons name="close-circle" size={22} color="#ff3b30" />
+                </TouchableOpacity>
+              )}
             </View>
           ))}
         </View>
       )}
 
-      <FormSubmitButton onPress={onSubmit} />
+      {showSubmit && <FormSubmitButton onPress={onSubmit} />}
     </View>
   );
 }

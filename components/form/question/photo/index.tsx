@@ -50,6 +50,8 @@ export function FormPhotoQuestion({
   const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
   const [localExamples, setLocalExamples] = useState<string[]>([]);
   const [preview, setPreview] = useState<{ uris: string[]; index: number } | null>(null);
+  const showSubmit = question.status !== 'Em avaliação' && question.status !== 'Aprovado';
+  const readOnly = !showSubmit;
 
   useEffect(() => {
     if (!question.examples?.length) return;
@@ -104,7 +106,7 @@ export function FormPhotoQuestion({
                 key={pIdx}
                 uri={photo.uri}
                 synced={photo.synced}
-                onDelete={() => onDeletePhoto(pIdx)}
+                onDelete={readOnly ? undefined : () => onDeletePhoto(pIdx)}
                 onPress={photo.uri === 'na' ? undefined : () => {
                   const photoUris = photos.filter((p) => p.uri !== 'na').map((p) => p.uri);
                   const realIndex = photoUris.indexOf(photo.uri);
@@ -116,8 +118,8 @@ export function FormPhotoQuestion({
         </View>
       )}
 
-      <FormUploadActions onGallery={onGallery} onCamera={onCamera} onNA={onNA} />
-      <FormSubmitButton onPress={onSubmit} />
+      {!readOnly && <FormUploadActions onGallery={onGallery} onCamera={onCamera} onNA={onNA} />}
+      {showSubmit && <FormSubmitButton onPress={onSubmit} />}
     </View>
   );
 }

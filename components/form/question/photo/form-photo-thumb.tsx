@@ -5,7 +5,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 type FormPhotoThumbProps = {
   uri: string;
   synced: boolean;
-  onDelete: () => void;
+  onDelete?: () => void;
   onPress?: () => void;
 };
 
@@ -28,9 +28,11 @@ export function FormPhotoThumb({ uri, synced, onDelete, onPress }: FormPhotoThum
       ) : (
         <Image source={{ uri }} style={styles.image} />
       )}
-      <TouchableOpacity style={styles.deleteBtn} onPress={onDelete}>
-        <Ionicons name="close-circle" size={22} color="#ff3b30" />
-      </TouchableOpacity>
+      {onDelete && (
+        <TouchableOpacity style={styles.deleteBtn} onPress={onDelete}>
+          <Ionicons name="close-circle" size={22} color="#ff3b30" />
+        </TouchableOpacity>
+      )}
       {!synced && (
         <View style={styles.syncPending}>
           <Ionicons name="time-outline" size={14} color="#f59e0b" />

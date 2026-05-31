@@ -21,6 +21,8 @@ export function BinarySegmentedControl({ title, status, description, value, onCh
   const inputBg = theme === 'dark' ? '#2c2c2c' : '#f8f8f8';
   const yesBg = theme === 'dark' ? '#0d2818' : '#f0fdf4';
   const noBg = theme === 'dark' ? '#2a1011' : '#fef2f2';
+  const showSubmit = status !== 'Em avaliação' && status !== 'Aprovado';
+  const readOnly = !showSubmit;
 
   return (
     <View style={styles.block}>
@@ -39,6 +41,7 @@ export function BinarySegmentedControl({ title, status, description, value, onCh
           style={[styles.option, { backgroundColor: inputBg }, value === true && { backgroundColor: yesBg, borderColor: '#16a34a' }]}
           activeOpacity={0.7}
           onPress={() => onChange(true)}
+          disabled={readOnly}
         >
           <Ionicons
             name={value === true ? 'checkmark-circle' : 'checkmark-circle-outline'}
@@ -52,6 +55,7 @@ export function BinarySegmentedControl({ title, status, description, value, onCh
           style={[styles.option, { backgroundColor: inputBg }, value === false && { backgroundColor: noBg, borderColor: '#dc2626' }]}
           activeOpacity={0.7}
           onPress={() => onChange(false)}
+          disabled={readOnly}
         >
           <Ionicons
             name={value === false ? 'close-circle' : 'close-circle-outline'}
@@ -62,7 +66,7 @@ export function BinarySegmentedControl({ title, status, description, value, onCh
         </TouchableOpacity>
       </View>
 
-      <FormSubmitButton onPress={onSubmit} />
+      {showSubmit && <FormSubmitButton onPress={onSubmit} />}
     </View>
   );
 }

@@ -101,9 +101,11 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
                   <FormTextQuestion
                     title={q.title}
                     status={q.status}
+                    description={q.description}
                     placeholder={q.placeholder}
                     value={textAnswers[qKey] ?? ''}
                     onChange={(val) => handleTextChange(qKey, val)}
+                    onSubmit={handleSubmit}
                   />
                 )}
                 {q.type === 'photo' && (

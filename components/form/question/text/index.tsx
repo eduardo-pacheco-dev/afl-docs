@@ -1,16 +1,19 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
+import { FormSubmitButton } from '../../form-submit-button';
 
 type FormTextQuestionProps = {
   title: string;
   status?: string;
+  description?: string;
   placeholder?: string;
   value: string;
   onChange: (value: string) => void;
+  onSubmit: () => void;
 };
 
-export function FormTextQuestion({ title, status, placeholder, value, onChange }: FormTextQuestionProps) {
+export function FormTextQuestion({ title, status, description, placeholder, value, onChange, onSubmit }: FormTextQuestionProps) {
   const theme = useColorScheme() ?? 'light';
   const textColor = Colors[theme].text;
   const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
@@ -27,6 +30,7 @@ export function FormTextQuestion({ title, status, placeholder, value, onChange }
           </View>
         )}
       </View>
+      {description && <Text style={[styles.description, { color: mutedColor }]}>{description}</Text>}
       <TextInput
         style={[styles.input, { backgroundColor: inputBg, borderColor, color: textColor }]}
         placeholder={placeholder}
@@ -35,6 +39,7 @@ export function FormTextQuestion({ title, status, placeholder, value, onChange }
         onChangeText={onChange}
         multiline
       />
+      <FormSubmitButton onPress={onSubmit} />
     </View>
   );
 }
@@ -64,6 +69,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     color: '#d97706',
+  },
+  description: {
+    fontSize: 13,
+    lineHeight: 18,
+    marginTop: -4,
   },
   input: {
     borderRadius: 12,

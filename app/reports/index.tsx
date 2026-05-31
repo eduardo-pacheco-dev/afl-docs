@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
 import { ReportCard } from '@/components/report-card';
 import { ReportListItem } from '@/components/report-list-item';
+import { ReportStatusFilter } from '@/components/report-status-filter';
 import { Report } from '@/src/domain/entities/report';
 import { ReportLocalDataSource } from '@/src/data/datasources/report-datasource';
 import { ReportRepositoryImpl } from '@/src/data/repositories/report-repository-impl';
@@ -23,23 +24,53 @@ export default function ReportsListScreen() {
   const [reports, setReports] = useState<Report[]>([]);
   const [search, setSearch] = useState('');
   const [viewMode, setViewMode] = useState<ViewMode>('card');
+  const [refreshing, setRefreshing] = useState(false);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
 
-  useEffect(() => {
-    getReportsUseCase.execute().then(setReports);
+  const loadReports = useCallback(async () => {
+    const data = await getReportsUseCase.execute();
+    setReports(data);
   }, []);
 
+  useEffect(() => {
+    loadReports();
+  }, [loadReports]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadReports();
+    setRefreshing(false);
+  }, [loadReports]);
+
   const filtered = useMemo(() => {
-    if (!search.trim()) return reports;
-    const q = search.toLowerCase();
-    return reports.filter(
-      (r) =>
-        r.title.toLowerCase().includes(q) ||
-        r.subtitle.toLowerCase().includes(q) ||
-        r.auditor.toLowerCase().includes(q) ||
-        r.executor.toLowerCase().includes(q) ||
-        r.client.toLowerCase().includes(q),
+    let result = reports;
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (r) =>
+          r.title.toLowerCase().includes(q) ||
+          r.subtitle.toLowerCase().includes(q) ||
+          r.auditor.toLowerCase().includes(q) ||
+          r.executor.toLowerCase().includes(q) ||
+          r.client.toLowerCase().includes(q),
+      );
+    }
+    if (selectedStatuses.length > 0) {
+      result = result.filter((r) => selectedStatuses.includes(r.status));
+    }
+    return result;
+  }, [search, reports, selectedStatuses]);
+
+  const statuses = useMemo(() => {
+    const set = new Set(reports.map((r) => r.status));
+    return Array.from(set);
+  }, [reports]);
+
+  const toggleStatus = useCallback((status: string) => {
+    setSelectedStatuses((prev) =>
+      prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status],
     );
-  }, [search, reports]);
+  }, []);
 
   const renderItem = useCallback(
     ({ item }: { item: Report }) => {
@@ -103,12 +134,27 @@ export default function ReportsListScreen() {
         </View>
       </View>
 
+      <ReportStatusFilter statuses={statuses} selected={selectedStatuses} onToggle={toggleStatus} />
+
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
+        contentContainerStyle={[styles.list, reports.length === 0 && styles.listEmpty]}
         renderItem={renderItem}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={
+          <View style={styles.empty}>
+            <View style={[styles.emptyIcon, { backgroundColor: inputBg }]}>
+              <Ionicons name="document-text-outline" size={40} color={inactiveColor} />
+            </View>
+            <Text style={[styles.emptyTitle, { color: inputColor }]}>Nenhum relatório</Text>
+            <Text style={[styles.emptyDesc, { color: inactiveColor }]}>
+              Use o código de acesso na página inicial para adicionar relatórios.
+            </Text>
+          </View>
+        }
       />
     </ThemedView>
   );
@@ -157,5 +203,31 @@ const styles = StyleSheet.create({
   list: {
     padding: 16,
     gap: 12,
+  },
+  listEmpty: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  empty: {
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 32,
+  },
+  emptyIcon: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+  },
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  emptyDesc: {
+    fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 20,
   },
 });

@@ -7,7 +7,8 @@ function getDefaultReports(): Report[] {
   return [
     {
       id: '1',
-      title: 'SN-SSYSB6 – Auditoria Interna EHS',
+      hash: 'A1B2C3',
+      title: 'SN-PRAC1 - Auditoria EHS',
       subtitle: 'NOKIA',
       initials: 'SN',
       status: 'Concluído',
@@ -15,9 +16,37 @@ function getDefaultReports(): Report[] {
       auditor: 'Eduardo Pacheco',
       executor: 'Higo Oliveira',
       client: 'TIM #140',
+      responsible: 'Joelson Gomes',
+      progress: 71,
+      approved: 49,
+      total: 69,
+      forms: [
+        {
+          title: 'TÉCNICO 1',
+          questions: [
+            { type: 'photo', title: 'Foto do capacete', status: 'Aguardando', description: 'Tire uma foto do capacete de segurança utilizado pelo técnico.', examples: ['https://picsum.photos/600/600?random=1'] },
+            { type: 'text', title: 'Observações técnicas', placeholder: 'Descreva as condições observadas...' },
+          ],
+        },
+        {
+          title: 'TÉCNICO 2',
+          questions: [
+            { type: 'photo', title: 'Foto da placa de obra', status: 'Aguardando', description: 'Registre a placa de identificação da obra com visibilidade total.', examples: ['https://picsum.photos/600/600?random=2'] },
+            { type: 'photo', title: 'Foto do entorno', status: 'Aguardando', description: 'Capture uma vista panorâmica do entorno da obra.', examples: ['https://picsum.photos/600/600?random=3'] },
+          ],
+        },
+        {
+          title: 'DOCUMENTAÇÃO',
+          questions: [
+            { type: 'text', title: 'Número do documento', status: 'Pendente', placeholder: 'Ex: DOC-2026-001' },
+            { type: 'photo', title: 'Foto do documento assinado', description: 'Fotografe o documento completo com todas as assinaturas visíveis.', examples: ['https://picsum.photos/600/600?random=4'] },
+          ],
+        },
+      ],
     },
     {
       id: '2',
+      hash: 'D4E5F6',
       title: 'CT-ALPHA01 – Inspeção de Segurança',
       subtitle: 'ALPHA',
       initials: 'CT',
@@ -26,9 +55,24 @@ function getDefaultReports(): Report[] {
       auditor: 'Maria Souza',
       executor: 'João Santos',
       client: 'VIVO #089',
+      responsible: 'João Santos',
+      progress: 45,
+      approved: 22,
+      total: 49,
+      forms: [
+        {
+          title: 'EPIs',
+          questions: [
+            { type: 'photo', title: 'Foto do capacete', status: 'Concluído', description: 'Registre o capacete sendo utilizado conforme as normas de segurança.', examples: ['https://picsum.photos/600/600?random=5'] },
+            { type: 'photo', title: 'Foto do cinto de segurança', status: 'Aguardando', description: 'Fotografe o cinto de segurança tipo paraquedista corretamente afivelado.', examples: ['https://picsum.photos/600/600?random=6'] },
+            { type: 'text', title: 'Observações', placeholder: 'Descreva o estado dos EPIs...' },
+          ],
+        },
+      ],
     },
     {
       id: '3',
+      hash: 'G7H8I9',
       title: 'RF-BETA02 – Auditoria Ambiental',
       subtitle: 'BETA LTDA',
       initials: 'RF',
@@ -37,9 +81,15 @@ function getDefaultReports(): Report[] {
       auditor: 'Carlos Lima',
       executor: 'Ana Costa',
       client: 'CLARO #022',
+      responsible: 'Ana Costa',
+      progress: 10,
+      approved: 3,
+      total: 28,
+      forms: [],
     },
     {
       id: '4',
+      hash: 'J0K1L2',
       title: 'MK-GAMMA03 – Revisão de Processos',
       subtitle: 'GAMMA S.A.',
       initials: 'MK',
@@ -48,9 +98,23 @@ function getDefaultReports(): Report[] {
       auditor: 'Fernanda Rocha',
       executor: 'Pedro Alves',
       client: 'OI #315',
+      responsible: 'Pedro Alves',
+      progress: 100,
+      approved: 42,
+      total: 42,
+      forms: [
+        {
+          title: 'PROCESSOS',
+          questions: [
+            { type: 'text', title: 'Nome do processo revisado', placeholder: 'Ex: P-001/2026' },
+            { type: 'photo', title: 'Evidência fotográfica', description: 'Anexe uma foto que comprove a execução do processo revisado.', examples: ['https://picsum.photos/600/600?random=7'] },
+          ],
+        },
+      ],
     },
     {
       id: '5',
+      hash: 'M3N4O5',
       title: 'PL-DELTA04 – Diagnóstico EHS',
       subtitle: 'DELTA IND.',
       initials: 'PL',
@@ -59,36 +123,59 @@ function getDefaultReports(): Report[] {
       auditor: 'Eduardo Pacheco',
       executor: 'Luciana Torres',
       client: 'TIM #140',
+      responsible: 'Luciana Torres',
+      progress: 60,
+      approved: 31,
+      total: 52,
+      forms: [
+        {
+          title: 'SEGURANÇA',
+          questions: [
+            { type: 'photo', title: 'Foto da sinalização', status: 'Aguardando', description: 'Registre as placas de sinalização de segurança do local.', examples: ['https://picsum.photos/600/600?random=8'] },
+            { type: 'photo', title: 'Foto do extintor', status: 'Aguardando', description: 'Fotografe o extintor com o lacre e a data de validade visíveis.', examples: ['https://picsum.photos/600/600?random=9'] },
+            { type: 'text', title: 'Observações de segurança', placeholder: 'Descreva as condições...' },
+          ],
+        },
+        {
+          title: 'MEIO AMBIENTE',
+          questions: [
+            { type: 'text', title: 'Resíduos identificados', placeholder: 'Liste os resíduos encontrados' },
+          ],
+        },
+      ],
     },
   ];
 }
 
 function isValidReport(data: unknown): data is Report[] {
   if (!Array.isArray(data) || data.length === 0) return false;
-  return 'subtitle' in data[0] && 'initials' in data[0] && 'status' in data[0];
+  return 'responsible' in data[0] && 'progress' in data[0] && 'forms' in data[0] && 'hash' in data[0];
 }
 
 export interface ReportDataSource {
   getReports(): Promise<Report[]>;
+  getReportById(id: string): Promise<Report | null>;
+  getReportByHash(hash: string): Promise<Report | null>;
   saveReport(report: Report): Promise<void>;
   saveAll(reports: Report[]): Promise<void>;
+  deleteReportById(id: string): Promise<void>;
 }
 
 export class ReportLocalDataSource implements ReportDataSource {
   async getReports(): Promise<Report[]> {
     const data = await AsyncStorage.getItem(REPORTS_KEY);
-    if (!data) {
-      const defaults = getDefaultReports();
-      await AsyncStorage.setItem(REPORTS_KEY, JSON.stringify(defaults));
-      return defaults;
-    }
+    if (!data) return [];
+    return JSON.parse(data);
+  }
 
-    const parsed = JSON.parse(data);
-    if (isValidReport(parsed)) return parsed;
+  async getReportById(id: string): Promise<Report | null> {
+    const reports = await this.getReports();
+    return reports.find((r) => r.id === id) ?? null;
+  }
 
-    const defaults = getDefaultReports();
-    await AsyncStorage.setItem(REPORTS_KEY, JSON.stringify(defaults));
-    return defaults;
+  async getReportByHash(hash: string): Promise<Report | null> {
+    const reports = await this.getReports();
+    return reports.find((r) => r.hash === hash) ?? null;
   }
 
   async saveReport(report: Report): Promise<void> {
@@ -99,5 +186,11 @@ export class ReportLocalDataSource implements ReportDataSource {
 
   async saveAll(reports: Report[]): Promise<void> {
     await AsyncStorage.setItem(REPORTS_KEY, JSON.stringify(reports));
+  }
+
+  async deleteReportById(id: string): Promise<void> {
+    const reports = await this.getReports();
+    const filtered = reports.filter((r) => r.id !== id);
+    await AsyncStorage.setItem(REPORTS_KEY, JSON.stringify(filtered));
   }
 }

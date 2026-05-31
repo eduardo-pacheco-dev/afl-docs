@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { Colors } from '@/constants/theme';
 import { FormSection } from './form-section';
-import { FormTextQuestion } from './form-text-question';
-import { FormPhotoThumb } from './form-photo-thumb';
-import { FormUploadActions } from './form-upload-actions';
+import { FormTextQuestion } from './question/text';
+import { FormPhotoQuestion } from './question/photo';
 import { FormSubmitButton } from './form-submit-button';
 import { FormAnswer } from '@/src/domain/entities/form-answer';
 import type { FormSection as FormSectionType } from '@/src/domain/entities/report';
@@ -88,7 +86,6 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
   };
 
   const bgColor = theme === 'dark' ? '#151718' : '#ffffff';
-  const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: bgColor }]} contentContainerStyle={styles.content}>
@@ -110,35 +107,15 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
                   />
                 )}
                 {q.type === 'photo' && (
-                  <View>
-                    <Text style={[styles.examplesLabel, { color: mutedColor }]}>EXEMPLOS</Text>
-                    <View style={styles.exampleThumb} />
-
-                    {sectionPhotos.length > 0 && (
-                      <View>
-                        <Text style={[styles.photoCounter, { color: mutedColor }]}>
-                          FOTOS ({sectionPhotos.length}/{sectionPhotos.length})
-                        </Text>
-                        <View style={styles.photoGrid}>
-                          {sectionPhotos.map((photo, pIdx) => (
-                            <FormPhotoThumb
-                              key={pIdx}
-                              uri={photo.uri}
-                              synced={photo.synced}
-                              onDelete={() => removePhoto(sIdx, qIdx, pIdx)}
-                            />
-                          ))}
-                        </View>
-                      </View>
-                    )}
-
-                    <FormUploadActions
-                      onGallery={() => pickImage(sIdx, qIdx)}
-                      onCamera={() => takePhoto(sIdx, qIdx)}
-                      onNA={() => addNAPhoto(sIdx, qIdx)}
-                    />
-                    <FormSubmitButton onPress={handleSubmit} />
-                  </View>
+                  <FormPhotoQuestion
+                    question={q}
+                    photos={sectionPhotos}
+                    onGallery={() => pickImage(sIdx, qIdx)}
+                    onCamera={() => takePhoto(sIdx, qIdx)}
+                    onNA={() => addNAPhoto(sIdx, qIdx)}
+                    onDeletePhoto={(pIdx) => removePhoto(sIdx, qIdx, pIdx)}
+                    onSubmit={handleSubmit}
+                  />
                 )}
               </View>
             );
@@ -160,29 +137,5 @@ const styles = StyleSheet.create({
   },
   questionBlock: {
     gap: 10,
-  },
-  examplesLabel: {
-    fontSize: 11,
-    fontWeight: '600',
-    letterSpacing: 1,
-    marginBottom: 6,
-  },
-  exampleThumb: {
-    width: 72,
-    height: 72,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#d1d1d6',
-    marginBottom: 12,
-  },
-  photoCounter: {
-    fontSize: 12,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  photoGrid: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 12,
   },
 });

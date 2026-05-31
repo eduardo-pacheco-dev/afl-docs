@@ -86,16 +86,16 @@ export function ReportDetailHeader({ report, onSync, onDelete, onArchive }: Repo
       <Modal visible={menuOpen} transparent animationType="fade" onRequestClose={() => setMenuOpen(false)}>
         <Pressable style={styles.backdrop} onPress={() => setMenuOpen(false)} />
         <View style={[styles.menu, { backgroundColor: bgColor, shadowColor: '#000' }]}>
-          {onDelete && (
-            <TouchableOpacity style={styles.menuItem} onPress={() => { setMenuOpen(false); onDelete(); }}>
-              <Ionicons name="trash-outline" size={20} color="#ef4444" />
-              <Text style={[styles.menuText, { color: '#ef4444' }]}>Deletar</Text>
-            </TouchableOpacity>
-          )}
           {onArchive && (
             <TouchableOpacity style={styles.menuItem} onPress={() => { setMenuOpen(false); onArchive(); }}>
               <Ionicons name="archive-outline" size={20} color={textColor} />
               <Text style={[styles.menuText, { color: textColor }]}>Arquivar</Text>
+            </TouchableOpacity>
+          )}
+          {onDelete && (
+            <TouchableOpacity style={styles.menuItem} onPress={() => { setMenuOpen(false); onDelete(); }}>
+              <Ionicons name="trash-outline" size={20} color="#ef4444" />
+              <Text style={[styles.menuText, { color: '#ef4444' }]}>Deletar</Text>
             </TouchableOpacity>
           )}
         </View>

@@ -23,10 +23,22 @@ export default function ReportsListScreen() {
   const [reports, setReports] = useState<Report[]>([]);
   const [search, setSearch] = useState('');
   const [viewMode, setViewMode] = useState<ViewMode>('card');
+  const [refreshing, setRefreshing] = useState(false);
+
+  const loadReports = useCallback(async () => {
+    const data = await getReportsUseCase.execute();
+    setReports(data);
+  }, []);
 
   useEffect(() => {
-    getReportsUseCase.execute().then(setReports);
-  }, []);
+    loadReports();
+  }, [loadReports]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadReports();
+    setRefreshing(false);
+  }, [loadReports]);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return reports;
@@ -108,6 +120,8 @@ export default function ReportsListScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={[styles.list, reports.length === 0 && styles.listEmpty]}
         renderItem={renderItem}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           <View style={styles.empty}>

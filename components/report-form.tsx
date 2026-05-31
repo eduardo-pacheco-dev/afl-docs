@@ -150,6 +150,7 @@ export function ReportForm({ reportId = '' }: { reportId?: string }) {
                       onCamera={() => takePhoto(sIdx, qIdx)}
                       onNA={() => addNAPhoto(sIdx, qIdx)}
                     />
+                    <FormSubmitButton onPress={handleSubmit} />
                   </View>
                 )}
               </View>
@@ -157,7 +158,6 @@ export function ReportForm({ reportId = '' }: { reportId?: string }) {
           })}
         </FormSection>
       ))}
-      <FormSubmitButton onPress={handleSubmit} />
     </ScrollView>
   );
 }

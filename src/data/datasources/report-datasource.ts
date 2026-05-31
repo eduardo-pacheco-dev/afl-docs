@@ -24,22 +24,22 @@ function getDefaultReports(): Report[] {
         {
           title: 'TÉCNICO 1',
           questions: [
-            { type: 'photo', title: 'Foto do capacete', status: 'Aguardando', description: 'Tire uma foto do capacete de segurança utilizado pelo técnico.' },
+            { type: 'photo', title: 'Foto do capacete', status: 'Aguardando', description: 'Tire uma foto do capacete de segurança utilizado pelo técnico.', examples: ['https://picsum.photos/600/600?random=1'] },
             { type: 'text', title: 'Observações técnicas', placeholder: 'Descreva as condições observadas...' },
           ],
         },
         {
           title: 'TÉCNICO 2',
           questions: [
-            { type: 'photo', title: 'Foto da placa de obra', status: 'Aguardando', description: 'Registre a placa de identificação da obra com visibilidade total.' },
-            { type: 'photo', title: 'Foto do entorno', status: 'Aguardando', description: 'Capture uma vista panorâmica do entorno da obra.' },
+            { type: 'photo', title: 'Foto da placa de obra', status: 'Aguardando', description: 'Registre a placa de identificação da obra com visibilidade total.', examples: ['https://picsum.photos/600/600?random=2'] },
+            { type: 'photo', title: 'Foto do entorno', status: 'Aguardando', description: 'Capture uma vista panorâmica do entorno da obra.', examples: ['https://picsum.photos/600/600?random=3'] },
           ],
         },
         {
           title: 'DOCUMENTAÇÃO',
           questions: [
             { type: 'text', title: 'Número do documento', status: 'Pendente', placeholder: 'Ex: DOC-2026-001' },
-            { type: 'photo', title: 'Foto do documento assinado', description: 'Fotografe o documento completo com todas as assinaturas visíveis.' },
+            { type: 'photo', title: 'Foto do documento assinado', description: 'Fotografe o documento completo com todas as assinaturas visíveis.', examples: ['https://picsum.photos/600/600?random=4'] },
           ],
         },
       ],
@@ -63,8 +63,8 @@ function getDefaultReports(): Report[] {
         {
           title: 'EPIs',
           questions: [
-            { type: 'photo', title: 'Foto do capacete', status: 'Concluído', description: 'Registre o capacete sendo utilizado conforme as normas de segurança.' },
-            { type: 'photo', title: 'Foto do cinto de segurança', status: 'Aguardando', description: 'Fotografe o cinto de segurança tipo paraquedista corretamente afivelado.' },
+            { type: 'photo', title: 'Foto do capacete', status: 'Concluído', description: 'Registre o capacete sendo utilizado conforme as normas de segurança.', examples: ['https://picsum.photos/600/600?random=5'] },
+            { type: 'photo', title: 'Foto do cinto de segurança', status: 'Aguardando', description: 'Fotografe o cinto de segurança tipo paraquedista corretamente afivelado.', examples: ['https://picsum.photos/600/600?random=6'] },
             { type: 'text', title: 'Observações', placeholder: 'Descreva o estado dos EPIs...' },
           ],
         },
@@ -107,7 +107,7 @@ function getDefaultReports(): Report[] {
           title: 'PROCESSOS',
           questions: [
             { type: 'text', title: 'Nome do processo revisado', placeholder: 'Ex: P-001/2026' },
-            { type: 'photo', title: 'Evidência fotográfica', description: 'Anexe uma foto que comprove a execução do processo revisado.' },
+            { type: 'photo', title: 'Evidência fotográfica', description: 'Anexe uma foto que comprove a execução do processo revisado.', examples: ['https://picsum.photos/600/600?random=7'] },
           ],
         },
       ],
@@ -131,8 +131,8 @@ function getDefaultReports(): Report[] {
         {
           title: 'SEGURANÇA',
           questions: [
-            { type: 'photo', title: 'Foto da sinalização', status: 'Aguardando', description: 'Registre as placas de sinalização de segurança do local.' },
-            { type: 'photo', title: 'Foto do extintor', status: 'Aguardando', description: 'Fotografe o extintor com o lacre e a data de validade visíveis.' },
+            { type: 'photo', title: 'Foto da sinalização', status: 'Aguardando', description: 'Registre as placas de sinalização de segurança do local.', examples: ['https://picsum.photos/600/600?random=8'] },
+            { type: 'photo', title: 'Foto do extintor', status: 'Aguardando', description: 'Fotografe o extintor com o lacre e a data de validade visíveis.', examples: ['https://picsum.photos/600/600?random=9'] },
             { type: 'text', title: 'Observações de segurança', placeholder: 'Descreva as condições...' },
           ],
         },

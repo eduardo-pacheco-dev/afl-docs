@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
 import { FormQuestion } from '@/src/domain/entities/report';
@@ -44,8 +44,16 @@ export function FormPhotoQuestion({
         )}
       </View>
       {description && <Text style={[styles.description, { color: mutedColor }]}>{description}</Text>}
-      <Text style={[styles.examplesLabel, { color: mutedColor }]}>EXEMPLOS</Text>
-      <View style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} />
+      {question.examples && question.examples.length > 0 && (
+        <View>
+          <Text style={[styles.examplesLabel, { color: mutedColor }]}>EXEMPLOS</Text>
+          <View style={styles.examplesRow}>
+            {question.examples.map((url, i) => (
+              <Image key={i} source={{ uri: url }} style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} />
+            ))}
+          </View>
+        </View>
+      )}
 
       {photos.length > 0 && (
         <View>
@@ -108,12 +116,16 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginBottom: 6,
   },
+  examplesRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 12,
+  },
   exampleThumb: {
     width: 72,
     height: 72,
     borderRadius: 10,
     borderWidth: 1,
-    marginBottom: 12,
   },
   photoCounter: {
     fontSize: 12,

@@ -4,6 +4,7 @@ export interface FormQuestion {
   status?: string;
   placeholder?: string;
   description?: string;
+  examples?: string[];
 }
 
 export interface FormSection {

@@ -5,6 +5,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { FormSection } from './form-section';
 import { FormTextQuestion } from './question/text';
 import { FormPhotoQuestion } from './question/photo';
+import { BinarySegmentedControl } from './question/yesno';
 import { FormSubmitButton } from './form-submit-button';
 import { FormAnswer } from '@/src/domain/entities/form-answer';
 import type { FormSection as FormSectionType } from '@/src/domain/entities/report';
@@ -36,6 +37,7 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
   const [expandedSections, setExpandedSections] = useState<Record<number, boolean>>({ 0: true });
   const [textAnswers, setTextAnswers] = useState<Record<string, string>>({});
   const [photos, setPhotos] = useState<Record<string, Photo[]>>({});
+  const [yesnoAnswers, setYesnoAnswers] = useState<Record<string, boolean | null>>({});
 
   const toggleSection = (index: number) => {
     setExpandedSections((prev) => ({ ...prev, [index]: !prev[index] }));
@@ -43,6 +45,10 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
 
   const handleTextChange = (key: string, value: string) => {
     setTextAnswers((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleYesNoChange = (key: string, value: boolean) => {
+    setYesnoAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
   const pickImage = async (sectionIdx: number, qIdx: number) => {
@@ -117,6 +123,16 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
                     onCamera={() => takePhoto(sIdx, qIdx)}
                     onNA={() => addNAPhoto(sIdx, qIdx)}
                     onDeletePhoto={(pIdx) => removePhoto(sIdx, qIdx, pIdx)}
+                    onSubmit={handleSubmit}
+                  />
+                )}
+                {q.type === 'yesno' && (
+                  <BinarySegmentedControl
+                    title={q.title}
+                    status={q.status}
+                    description={q.description}
+                    value={yesnoAnswers[qKey] ?? null}
+                    onChange={(val) => handleYesNoChange(qKey, val)}
                     onSubmit={handleSubmit}
                   />
                 )}

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
 import { FormQuestion } from '@/src/domain/entities/report';
 import { FormPhotoThumb } from './form-photo-thumb';
 import { FormUploadActions } from './form-upload-actions';
 import { FormSubmitButton } from '../../form-submit-button';
+import { ImagePreview } from '@/components/image-preview';
 
 type Photo = { uri: string; synced: boolean };
 
@@ -47,6 +48,7 @@ export function FormPhotoQuestion({
   const textColor = Colors[theme].text;
   const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
   const [localExamples, setLocalExamples] = useState<string[]>([]);
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!question.examples?.length) return;
@@ -74,10 +76,20 @@ export function FormPhotoQuestion({
           <Text style={[styles.examplesLabel, { color: mutedColor }]}>EXEMPLOS</Text>
           <View style={styles.examplesRow}>
             {(localExamples.length > 0 ? localExamples : question.examples).map((uri, i) => (
-              <Image key={i} source={{ uri }} style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} />
+              <Pressable key={i} onPress={() => setPreviewIndex(i)}>
+                <Image source={{ uri }} style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} />
+              </Pressable>
             ))}
           </View>
         </View>
+      )}
+
+      {previewIndex !== null && (
+        <ImagePreview
+          uris={localExamples.length > 0 ? localExamples : question.examples!}
+          initialIndex={previewIndex}
+          onClose={() => setPreviewIndex(null)}
+        />
       )}
 
       {photos.length > 0 && (

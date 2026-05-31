@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, Platform, StyleSheet } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
@@ -6,14 +6,14 @@ import { ReportDetailHeader } from '@/components/report-detail-header';
 import { ReportStatusFilter } from '@/components/report-status-filter';
 import { ReportForm } from '@/components/form/report-form';
 import { Report } from '@/src/domain/entities/report';
+import { ReportApiDataSource } from '@/src/data/datasources/report-api-datasource';
 import { ReportLocalDataSource } from '@/src/data/datasources/report-datasource';
 import { ReportRepositoryImpl } from '@/src/data/repositories/report-repository-impl';
 import { GetReportByIdUseCase } from '@/src/domain/usecases/get-report-by-id';
-import { SaveReportUseCase } from '@/src/domain/usecases/save-report';
 
 const localRepository = new ReportRepositoryImpl(new ReportLocalDataSource());
+const apiRepository = new ReportRepositoryImpl(new ReportApiDataSource());
 const getReportByIdUseCase = new GetReportByIdUseCase(localRepository);
-const saveReportUseCase = new SaveReportUseCase(localRepository);
 
 const allStatuses = ['Concluído', 'Em andamento', 'Pendente', 'Reprovado'];
 
@@ -55,11 +55,34 @@ export default function ReportDetailScreen() {
     Alert.alert('Arquivar relatório', 'Relatório arquivado com sucesso.');
   };
 
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSync = useCallback(async () => {
+    if (!report || syncing) return;
+    setSyncing(true);
+    try {
+      const fresh = await apiRepository.getReportById(report.id);
+      if (!fresh) {
+        Alert.alert('Não encontrado', 'Relatório não encontrado na API.');
+        return;
+      }
+      const all = await localRepository.getReports();
+      const updated = all.map((r) => (r.id === fresh.id ? fresh : r));
+      await localRepository.saveAll(updated);
+      setReport(fresh);
+      Alert.alert('Atualizado', 'Dados sincronizados com sucesso.');
+    } catch {
+      Alert.alert('Erro', 'Não foi possível sincronizar os dados.');
+    } finally {
+      setSyncing(false);
+    }
+  }, [report, syncing]);
+
   if (!report) return null;
 
   return (
     <ThemedView style={styles.container}>
-      <ReportDetailHeader report={report} onSync={() => {}} onDelete={handleDelete} onArchive={handleArchive} />
+      <ReportDetailHeader report={report} syncing={syncing} onSync={handleSync} onDelete={handleDelete} onArchive={handleArchive} />
       <ReportStatusFilter
         statuses={allStatuses}
         selected={selectedStatuses}

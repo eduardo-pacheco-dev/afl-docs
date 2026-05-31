@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, Easing, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Svg, { Circle, G } from 'react-native-svg';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -8,13 +8,37 @@ import type { Report } from '@/src/domain/entities/report';
 
 type ReportDetailHeaderProps = {
   report: Report;
+  syncing?: boolean;
   onSync?: () => void;
   onDelete?: () => void;
   onArchive?: () => void;
 };
 
-export function ReportDetailHeader({ report, onSync, onDelete, onArchive }: ReportDetailHeaderProps) {
+export function ReportDetailHeader({ report, syncing = false, onSync, onDelete, onArchive }: ReportDetailHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const spinAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (syncing) {
+      const loop = Animated.loop(
+        Animated.timing(spinAnim, {
+          toValue: 1,
+          duration: 1000,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }),
+      );
+      loop.start();
+      return () => loop.stop();
+    } else {
+      spinAnim.setValue(0);
+    }
+  }, [syncing, spinAnim]);
+
+  const spin = spinAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
   const theme = useColorScheme() ?? 'light';
   const textColor = Colors[theme].text;
   const iconColor = Colors[theme].icon;
@@ -75,7 +99,9 @@ export function ReportDetailHeader({ report, onSync, onDelete, onArchive }: Repo
       <View style={styles.actions}>
         {onSync && (
           <TouchableOpacity style={[styles.iconBtn, { backgroundColor: syncBg }]} onPress={onSync}>
-            <Ionicons name="sync" size={20} color={iconColor} />
+            <Animated.View style={{ transform: [{ rotate: spin }] }}>
+              <Ionicons name="sync" size={20} color={iconColor} />
+            </Animated.View>
           </TouchableOpacity>
         )}
         <TouchableOpacity style={[styles.iconBtn, { backgroundColor: syncBg }]} onPress={() => setMenuOpen(true)}>

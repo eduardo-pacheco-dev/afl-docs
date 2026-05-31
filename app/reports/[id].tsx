@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { Alert, Platform, StyleSheet } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
 import { ReportDetailHeader } from '@/components/report-detail-header';
@@ -33,25 +33,22 @@ export default function ReportDetailScreen() {
   };
 
   const handleDelete = () => {
-    Alert.alert('Deletar relatório', 'Tem certeza que deseja deletar este relatório?', [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Deletar',
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            if (!report) return;
-            const ds = new ReportLocalDataSource();
-            const all = await ds.getReports();
-            const filtered = all.filter((r) => r.id !== report.id);
-            await ds.saveAll(filtered);
-            router.back();
-          } catch (e) {
-            Alert.alert('Erro', 'Não foi possível deletar o relatório.');
-          }
-        },
-      },
-    ]);
+    const doDelete = () => {
+      if (!report) return;
+      localRepository
+        .deleteReportById(report.id)
+        .then(() => router.back())
+        .catch(() => Alert.alert('Erro', 'Não foi possível deletar o relatório.'));
+    };
+
+    if (Platform.OS === 'web') {
+      if (window.confirm('Tem certeza que deseja deletar este relatório?')) doDelete();
+    } else {
+      Alert.alert('Deletar relatório', 'Tem certeza que deseja deletar este relatório?', [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Deletar', style: 'destructive', onPress: doDelete },
+      ]);
+    }
   };
 
   const handleArchive = () => {

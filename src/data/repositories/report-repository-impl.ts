@@ -24,4 +24,8 @@ export class ReportRepositoryImpl implements ReportRepository {
   async saveAll(reports: Report[]): Promise<void> {
     return this.dataSource.saveAll(reports);
   }
+
+  async deleteReportById(id: string): Promise<void> {
+    return this.dataSource.deleteReportById(id);
+  }
 }

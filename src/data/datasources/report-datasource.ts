@@ -158,6 +158,7 @@ export interface ReportDataSource {
   getReportByHash(hash: string): Promise<Report | null>;
   saveReport(report: Report): Promise<void>;
   saveAll(reports: Report[]): Promise<void>;
+  deleteReportById(id: string): Promise<void>;
 }
 
 export class ReportLocalDataSource implements ReportDataSource {
@@ -185,5 +186,11 @@ export class ReportLocalDataSource implements ReportDataSource {
 
   async saveAll(reports: Report[]): Promise<void> {
     await AsyncStorage.setItem(REPORTS_KEY, JSON.stringify(reports));
+  }
+
+  async deleteReportById(id: string): Promise<void> {
+    const reports = await this.getReports();
+    const filtered = reports.filter((r) => r.id !== id);
+    await AsyncStorage.setItem(REPORTS_KEY, JSON.stringify(filtered));
   }
 }

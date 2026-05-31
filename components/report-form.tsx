@@ -320,7 +320,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 10,
-    overflow: 'hidden',
   },
   photoImage: {
     width: 80,
@@ -335,8 +334,8 @@ const styles = StyleSheet.create({
   },
   syncPending: {
     position: 'absolute',
-    bottom: 4,
-    right: 4,
+    bottom: -6,
+    right: -6,
     backgroundColor: '#fffbe6',
     borderRadius: 10,
     padding: 2,

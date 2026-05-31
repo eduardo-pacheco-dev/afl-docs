@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
@@ -6,9 +6,10 @@ type FormPhotoThumbProps = {
   uri: string;
   synced: boolean;
   onDelete: () => void;
+  onPress?: () => void;
 };
 
-export function FormPhotoThumb({ uri, synced, onDelete }: FormPhotoThumbProps) {
+export function FormPhotoThumb({ uri, synced, onDelete, onPress }: FormPhotoThumbProps) {
   const theme = useColorScheme() ?? 'light';
   const inputBg = theme === 'dark' ? '#2c2c2c' : '#f8f8f8';
   const borderColor = theme === 'dark' ? '#2c2c2c' : '#d1d1d6';
@@ -20,6 +21,10 @@ export function FormPhotoThumb({ uri, synced, onDelete }: FormPhotoThumbProps) {
         <View style={[styles.naThumb, { backgroundColor: inputBg, borderColor }]}>
           <Text style={[styles.naText, { color: mutedColor }]}>N/A</Text>
         </View>
+      ) : onPress ? (
+        <Pressable onPress={onPress}>
+          <Image source={{ uri }} style={styles.image} />
+        </Pressable>
       ) : (
         <Image source={{ uri }} style={styles.image} />
       )}

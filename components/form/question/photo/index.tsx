@@ -48,7 +48,7 @@ export function FormPhotoQuestion({
   const textColor = Colors[theme].text;
   const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
   const [localExamples, setLocalExamples] = useState<string[]>([]);
-  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
+  const [preview, setPreview] = useState<{ uris: string[]; index: number } | null>(null);
 
   useEffect(() => {
     if (!question.examples?.length) return;
@@ -76,7 +76,7 @@ export function FormPhotoQuestion({
           <Text style={[styles.examplesLabel, { color: mutedColor }]}>EXEMPLOS</Text>
           <View style={styles.examplesRow}>
             {(localExamples.length > 0 ? localExamples : question.examples).map((uri, i) => (
-              <Pressable key={i} onPress={() => setPreviewIndex(i)}>
+              <Pressable key={i} onPress={() => setPreview({ uris: localExamples.length > 0 ? localExamples : question.examples!, index: i })}>
                 <Image source={{ uri }} style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} />
               </Pressable>
             ))}
@@ -84,11 +84,11 @@ export function FormPhotoQuestion({
         </View>
       )}
 
-      {previewIndex !== null && (
+      {preview && (
         <ImagePreview
-          uris={localExamples.length > 0 ? localExamples : question.examples!}
-          initialIndex={previewIndex}
-          onClose={() => setPreviewIndex(null)}
+          uris={preview.uris}
+          initialIndex={preview.index}
+          onClose={() => setPreview(null)}
         />
       )}
 
@@ -104,6 +104,11 @@ export function FormPhotoQuestion({
                 uri={photo.uri}
                 synced={photo.synced}
                 onDelete={() => onDeletePhoto(pIdx)}
+                onPress={photo.uri === 'na' ? undefined : () => {
+                  const photoUris = photos.filter((p) => p.uri !== 'na').map((p) => p.uri);
+                  const realIndex = photoUris.indexOf(photo.uri);
+                  setPreview({ uris: photoUris, index: realIndex });
+                }}
               />
             ))}
           </View>

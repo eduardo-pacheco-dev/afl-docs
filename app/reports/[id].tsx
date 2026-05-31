@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Alert, Platform, StyleSheet } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
 import { ReportDetailHeader } from '@/components/report-detail-header';
 import { ReportStatusFilter } from '@/components/report-status-filter';
@@ -19,6 +19,7 @@ export default function ReportDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [report, setReport] = useState<Report | null>(null);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+  const navigation = useNavigation();
 
   const formStatuses = useMemo(() => {
     if (!report) return [];
@@ -30,6 +31,10 @@ export default function ReportDetailScreen() {
   useEffect(() => {
     if (id) getReportByIdUseCase.execute(id).then(setReport);
   }, [id]);
+
+  useLayoutEffect(() => {
+    if (report) navigation.setOptions({ title: report.title });
+  }, [report, navigation]);
 
   const toggleStatus = (status: string) => {
     setSelectedStatuses((prev) =>

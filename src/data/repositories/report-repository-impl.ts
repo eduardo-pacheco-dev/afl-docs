@@ -8,4 +8,12 @@ export class ReportRepositoryImpl implements ReportRepository {
   async getReports(): Promise<Report[]> {
     return this.dataSource.getReports();
   }
+
+  async saveReport(report: Report): Promise<void> {
+    return this.dataSource.saveReport(report);
+  }
+
+  async saveAll(reports: Report[]): Promise<void> {
+    return this.dataSource.saveAll(reports);
+  }
 }

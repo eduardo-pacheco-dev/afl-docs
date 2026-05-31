@@ -109,6 +109,7 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
                 {q.type === 'photo' && (
                   <FormPhotoQuestion
                     question={q}
+                    description={q.description}
                     photos={sectionPhotos}
                     onGallery={() => pickImage(sIdx, qIdx)}
                     onCamera={() => takePhoto(sIdx, qIdx)}

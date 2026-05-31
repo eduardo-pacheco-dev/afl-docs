@@ -3,6 +3,7 @@ export interface FormQuestion {
   title: string;
   status?: string;
   placeholder?: string;
+  description?: string;
 }
 
 export interface FormSection {

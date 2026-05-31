@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Colors } from '@/constants/theme';
 import { FormQuestion } from '@/src/domain/entities/report';
 import { FormPhotoThumb } from './form-photo-thumb';
 import { FormUploadActions } from './form-upload-actions';
@@ -10,6 +11,7 @@ type Photo = { uri: string; synced: boolean };
 type FormPhotoQuestionProps = {
   question: FormQuestion;
   photos: Photo[];
+  description?: string;
   onGallery: () => void;
   onCamera: () => void;
   onNA: () => void;
@@ -20,6 +22,7 @@ type FormPhotoQuestionProps = {
 export function FormPhotoQuestion({
   question,
   photos,
+  description,
   onGallery,
   onCamera,
   onNA,
@@ -27,10 +30,20 @@ export function FormPhotoQuestion({
   onSubmit,
 }: FormPhotoQuestionProps) {
   const theme = useColorScheme() ?? 'light';
+  const textColor = Colors[theme].text;
   const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
 
   return (
-    <View>
+    <View style={styles.block}>
+      <View style={styles.header}>
+        <Text style={[styles.title, { color: textColor }]}>{question.title}</Text>
+        {question.status && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>{question.status}</Text>
+          </View>
+        )}
+      </View>
+      {description && <Text style={[styles.description, { color: mutedColor }]}>{description}</Text>}
       <Text style={[styles.examplesLabel, { color: mutedColor }]}>EXEMPLOS</Text>
       <View style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} />
 
@@ -59,6 +72,36 @@ export function FormPhotoQuestion({
 }
 
 const styles = StyleSheet.create({
+  block: {
+    gap: 10,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 15,
+    fontWeight: '600',
+    flex: 1,
+    marginRight: 8,
+  },
+  badge: {
+    backgroundColor: '#fef3c7',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 100,
+  },
+  badgeText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#d97706',
+  },
+  description: {
+    fontSize: 13,
+    lineHeight: 18,
+    marginTop: -4,
+  },
   examplesLabel: {
     fontSize: 11,
     fontWeight: '600',

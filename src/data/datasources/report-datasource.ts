@@ -150,6 +150,7 @@ function isValidReport(data: unknown): data is Report[] {
 export interface ReportDataSource {
   getReports(): Promise<Report[]>;
   getReportById(id: string): Promise<Report | null>;
+  getReportByHash(hash: string): Promise<Report | null>;
   saveReport(report: Report): Promise<void>;
   saveAll(reports: Report[]): Promise<void>;
 }

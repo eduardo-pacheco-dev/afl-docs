@@ -13,6 +13,10 @@ export class ReportRepositoryImpl implements ReportRepository {
     return this.dataSource.getReportById(id);
   }
 
+  async getReportByHash(hash: string): Promise<Report | null> {
+    return this.dataSource.getReportByHash(hash);
+  }
+
   async saveReport(report: Report): Promise<void> {
     return this.dataSource.saveReport(report);
   }

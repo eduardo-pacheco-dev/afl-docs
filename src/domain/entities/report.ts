@@ -12,6 +12,7 @@ export interface FormSection {
 
 export interface Report {
   id: string;
+  hash: string;
   title: string;
   subtitle: string;
   initials: string;

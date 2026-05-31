@@ -1,10 +1,11 @@
 export interface FormQuestion {
-  type: 'text' | 'photo' | 'yesno';
+  type: 'text' | 'photo' | 'yesno' | 'checkbox';
   title: string;
   status?: string;
   placeholder?: string;
   description?: string;
   examples?: string[];
+  options?: string[];
 }
 
 export interface FormSection {

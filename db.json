@@ -21,7 +21,8 @@
           "questions": [
             { "type": "photo", "title": "Foto do capacete", "status": "Aguardando", "description": "Tire uma foto do capacete de segurança utilizado pelo técnico.", "examples": ["https://picsum.photos/600/600?random=1","https://picsum.photos/600/600?random=5"] },
             { "type": "text", "title": "Observações técnicas", "description": "Registre detalhes relevantes sobre as condições de segurança observadas durante a visita técnica.", "placeholder": "Descreva as condições observadas..." },
-            { "type": "yesno", "title": "Técnico utilizou EPIs corretamente?", "status": "Pendente", "description": "O técnico estava fazendo uso correto de todos os equipamentos de proteção individual obrigatórios?" }
+            { "type": "yesno", "title": "Técnico utilizou EPIs corretamente?", "status": "Pendente", "description": "O técnico estava fazendo uso correto de todos os equipamentos de proteção individual obrigatórios?" },
+            { "type": "checkbox", "title": "Ferramentas utilizadas", "status": "Concluído", "description": "Selecione as ferramentas que o técnico utilizou durante a execução dos serviços.", "options": ["Multímetro digital", "Câmera termográfica", "Medidor de tensão", "Alicate amperímetro", "Detector de gases"] }
           ]
         },
         {
@@ -35,6 +36,7 @@
           "title": "DOCUMENTAÇÃO",
           "questions": [
             { "type": "text", "title": "Número do documento", "status": "Pendente", "description": "Informe o número do documento de segurança para rastreamento e auditoria.", "placeholder": "Ex: DOC-2026-001" },
+            { "type": "checkbox", "title": "Tipos de documentos anexados", "status": "Pendente", "description": "Selecione quais tipos de documentos foram anexados a esta auditoria.", "options": ["ART", "ASO", "PCMAT", "PPRA", "Laudo Técnico"] },
             { "type": "photo", "title": "Foto do documento assinado", "description": "Fotografe o documento completo com todas as assinaturas visíveis.", "examples": ["https://picsum.photos/600/600?random=4"] }
           ]
         }
@@ -62,7 +64,8 @@
             { "type": "photo", "title": "Foto do capacete", "status": "Concluído", "description": "Registre o capacete sendo utilizado conforme as normas de segurança.", "examples": ["https://picsum.photos/600/600?random=5"] },
             { "type": "photo", "title": "Foto do cinto de segurança", "status": "Aguardando", "description": "Fotografe o cinto de segurança tipo paraquedista corretamente afivelado.", "examples": ["https://picsum.photos/600/600?random=6"] },
             { "type": "text", "title": "Observações", "description": "Detalhe o estado de conservação e conformidade dos Equipamentos de Proteção Individual.", "placeholder": "Descreva o estado dos EPIs..." },
-            { "type": "yesno", "title": "Cinto de segurança com certificação válida?", "status": "Pendente", "description": "O cinto de segurança tipo paraquedista possui certificação dentro do prazo de validade?" }
+            { "type": "yesno", "title": "Cinto de segurança com certificação válida?", "status": "Pendente", "description": "O cinto de segurança tipo paraquedista possui certificação dentro do prazo de validade?" },
+            { "type": "checkbox", "title": "EPIs disponíveis no local", "status": "Concluído", "description": "Marque todos os EPIs que estavam disponíveis e em condições de uso no momento da vistoria.", "options": ["Capacete", "Cinto de segurança", "Luvas", "Óculos de proteção", "Protetor auricular", "Máscara respiratória"] }
           ]
         }
       ]
@@ -87,7 +90,8 @@
           "title": "LICENÇAS",
           "questions": [
             { "type": "yesno", "title": "Licença ambiental vigente?", "status": "Aguardando", "description": "A empresa possui licença ambiental emitida pelo órgão competente dentro do prazo de validade?" },
-            { "type": "yesno", "title": "Relatório de emissões em dia?", "status": "Aguardando", "description": "O relatório de emissões atmosféricas foi entregue dentro do prazo regulamentar?" }
+            { "type": "yesno", "title": "Relatório de emissões em dia?", "status": "Aguardando", "description": "O relatório de emissões atmosféricas foi entregue dentro do prazo regulamentar?" },
+            { "type": "checkbox", "title": "Aspectos ambientais avaliados", "status": "Pendente", "description": "Selecione os aspectos ambientais que foram avaliados durante a auditoria.", "options": ["Emissões atmosféricas", "Efluentes líquidos", "Resíduos sólidos", "Ruído ambiental", "Recursos hídricos", "Fauna e flora"] }
           ]
         }
       ]
@@ -113,6 +117,7 @@
           "questions": [
             { "type": "text", "title": "Nome do processo revisado", "description": "Informe o código e a versão do processo que foi revisado nesta auditoria.", "placeholder": "Ex: P-001/2026" },
             { "type": "yesno", "title": "Processo aprovado sem ressalvas?", "status": "Concluído", "description": "O processo revisado atende a todos os requisitos sem necessidade de ajustes ou correções?" },
+            { "type": "checkbox", "title": "Documentos revisados", "status": "Concluído", "description": "Marque os documentos que foram revisados e validados durante esta auditoria.", "options": ["Procedimento operacional", "Instrução de trabalho", "Checklist de qualidade", "Registro de não conformidade", "Plano de ação corretiva"] },
             { "type": "photo", "title": "Evidência fotográfica", "description": "Anexe uma foto que comprove a execução do processo revisado.", "examples": ["https://picsum.photos/600/600?random=7"] }
           ]
         }
@@ -140,7 +145,8 @@
             { "type": "photo", "title": "Foto da sinalização", "status": "Aguardando", "description": "Registre as placas de sinalização de segurança do local.", "examples": ["https://picsum.photos/600/600?random=8"] },
             { "type": "photo", "title": "Foto do extintor", "status": "Aguardando", "description": "Fotografe o extintor com o lacre e a data de validade visíveis.", "examples": ["https://picsum.photos/600/600?random=9"] },
             { "type": "text", "title": "Observações de segurança", "description": "Descreva as condições de segurança observadas, incluindo riscos identificados e ações corretivas.", "placeholder": "Descreva as condições..." },
-            { "type": "yesno", "title": "Extintores com validade em dia?", "status": "Aguardando", "description": "Todos os extintores presentes no local possuem lacre íntegro e data de validade vigente?" }
+            { "type": "yesno", "title": "Extintores com validade em dia?", "status": "Aguardando", "description": "Todos os extintores presentes no local possuem lacre íntegro e data de validade vigente?" },
+            { "type": "checkbox", "title": "Riscos identificados", "status": "Aguardando", "description": "Selecione os riscos identificados durante a vistoria de segurança.", "options": ["Risco elétrico", "Risco de queda", "Risco químico", "Risco mecânico", "Risco biológico", "Risco ergonômico"] }
           ]
         },
         {

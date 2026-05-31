@@ -6,6 +6,7 @@ import { FormSection } from './form-section';
 import { FormTextQuestion } from './question/text';
 import { FormPhotoQuestion } from './question/photo';
 import { BinarySegmentedControl } from './question/yesno';
+import { FormCheckboxQuestion } from './question/checkbox';
 import { FormSubmitButton } from './form-submit-button';
 import { FormAnswer } from '@/src/domain/entities/form-answer';
 import type { FormSection as FormSectionType } from '@/src/domain/entities/report';
@@ -38,6 +39,7 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
   const [textAnswers, setTextAnswers] = useState<Record<string, string>>({});
   const [photos, setPhotos] = useState<Record<string, Photo[]>>({});
   const [yesnoAnswers, setYesnoAnswers] = useState<Record<string, boolean | null>>({});
+  const [checkboxAnswers, setCheckboxAnswers] = useState<Record<string, string[]>>({});
 
   const toggleSection = (index: number) => {
     setExpandedSections((prev) => ({ ...prev, [index]: !prev[index] }));
@@ -49,6 +51,10 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
 
   const handleYesNoChange = (key: string, value: boolean) => {
     setYesnoAnswers((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleCheckboxChange = (key: string, selected: string[]) => {
+    setCheckboxAnswers((prev) => ({ ...prev, [key]: selected }));
   };
 
   const pickImage = async (sectionIdx: number, qIdx: number) => {
@@ -133,6 +139,17 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
                     description={q.description}
                     value={yesnoAnswers[qKey] ?? null}
                     onChange={(val) => handleYesNoChange(qKey, val)}
+                    onSubmit={handleSubmit}
+                  />
+                )}
+                {q.type === 'checkbox' && (
+                  <FormCheckboxQuestion
+                    title={q.title}
+                    status={q.status}
+                    description={q.description}
+                    options={q.options ?? []}
+                    value={checkboxAnswers[qKey] ?? []}
+                    onChange={(selected) => handleCheckboxChange(qKey, selected)}
                     onSubmit={handleSubmit}
                   />
                 )}

@@ -6,12 +6,12 @@ import { ReportDetailHeader } from '@/components/report-detail-header';
 import { ReportStatusFilter } from '@/components/report-status-filter';
 import { ReportForm } from '@/components/report-form';
 import { Report } from '@/src/domain/entities/report';
-import { ReportLocalDataSource } from '@/src/data/datasources/report-datasource';
+import { ReportApiDataSource } from '@/src/data/datasources/report-api-datasource';
 import { ReportRepositoryImpl } from '@/src/data/repositories/report-repository-impl';
 import { GetReportByIdUseCase } from '@/src/domain/usecases/get-report-by-id';
 
 const getReportByIdUseCase = new GetReportByIdUseCase(
-  new ReportRepositoryImpl(new ReportLocalDataSource()),
+  new ReportRepositoryImpl(new ReportApiDataSource()),
 );
 
 const allStatuses = ['Concluído', 'Em andamento', 'Pendente', 'Reprovado'];

@@ -9,7 +9,7 @@ import { FormPhotoThumb } from '@/components/form-photo-thumb';
 import { FormUploadActions } from '@/components/form-upload-actions';
 import { FormSubmitButton } from '@/components/form-submit-button';
 import { FormAnswer } from '@/src/domain/entities/form-answer';
-import type { FormSection } from '@/src/domain/entities/report';
+import type { FormSection as FormSectionType } from '@/src/domain/entities/report';
 import { FormLocalDataSource } from '@/src/data/datasources/form-datasource';
 import { FormRepositoryImpl } from '@/src/data/repositories/form-repository-impl';
 import { SaveFormAnswersUseCase } from '@/src/domain/usecases/save-form-answers';
@@ -30,7 +30,7 @@ function addPhotoToState(
 
 type ReportFormProps = {
   reportId?: string;
-  sections?: FormSection[];
+  sections?: FormSectionType[];
 };
 
 export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {

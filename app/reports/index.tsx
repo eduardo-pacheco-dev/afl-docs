@@ -6,7 +6,7 @@ import { ThemedView } from '@/components/themed-view';
 import { ReportCard } from '@/components/report-card';
 import { ReportListItem } from '@/components/report-list-item';
 import { Report } from '@/src/domain/entities/report';
-import { ReportLocalDataSource } from '@/src/data/datasources/report-datasource';
+import { ReportApiDataSource } from '@/src/data/datasources/report-api-datasource';
 import { ReportRepositoryImpl } from '@/src/data/repositories/report-repository-impl';
 import { GetReportsUseCase } from '@/src/domain/usecases/get-reports';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -14,7 +14,7 @@ import { Colors } from '@/constants/theme';
 
 type ViewMode = 'card' | 'list';
 
-const dataSource = new ReportLocalDataSource();
+const dataSource = new ReportApiDataSource();
 const repository = new ReportRepositoryImpl(dataSource);
 const getReportsUseCase = new GetReportsUseCase(repository);
 

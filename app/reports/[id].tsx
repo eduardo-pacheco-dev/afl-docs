@@ -4,6 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
 import { ReportDetailHeader } from '@/components/report-detail-header';
 import { ReportStatusFilter } from '@/components/report-status-filter';
+import { ReportForm } from '@/components/report-form';
 import { Report } from '@/src/domain/entities/report';
 import { ReportLocalDataSource } from '@/src/data/datasources/report-datasource';
 import { ReportRepositoryImpl } from '@/src/data/repositories/report-repository-impl';
@@ -40,6 +41,7 @@ export default function ReportDetailScreen() {
         selected={selectedStatuses}
         onToggle={toggleStatus}
       />
+      <ReportForm />
     </ThemedView>
   );
 }

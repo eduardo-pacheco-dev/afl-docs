@@ -6,12 +6,15 @@ import { ThemedView } from '@/components/themed-view';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
 import { ReportApiDataSource } from '@/src/data/datasources/report-api-datasource';
+import { ReportLocalDataSource } from '@/src/data/datasources/report-datasource';
 import { ReportRepositoryImpl } from '@/src/data/repositories/report-repository-impl';
 import { GetReportByHashUseCase } from '@/src/domain/usecases/get-report-by-hash';
+import { SaveReportUseCase } from '@/src/domain/usecases/save-report';
 
-const getReportByHashUseCase = new GetReportByHashUseCase(
-  new ReportRepositoryImpl(new ReportApiDataSource()),
-);
+const apiRepository = new ReportRepositoryImpl(new ReportApiDataSource());
+const localRepository = new ReportRepositoryImpl(new ReportLocalDataSource());
+const getReportByHashUseCase = new GetReportByHashUseCase(apiRepository);
+const saveReportUseCase = new SaveReportUseCase(localRepository);
 
 const CHAR_COUNT = 6;
 
@@ -26,10 +29,12 @@ export default function ReportsScreen() {
     if (code.length !== CHAR_COUNT) return;
     setLoading(true);
     const report = await getReportByHashUseCase.execute(code);
-    setLoading(false);
     if (report) {
+      await saveReportUseCase.execute(report);
+      setLoading(false);
       router.push(`/reports/${report.id}` as any);
     } else {
+      setLoading(false);
       Alert.alert('Não encontrado', `Nenhum formulário com o código ${code}.`);
     }
   };

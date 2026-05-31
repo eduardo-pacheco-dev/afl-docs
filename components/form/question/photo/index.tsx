@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
 import { FormQuestion } from '@/src/domain/entities/report';
@@ -49,7 +50,7 @@ export function FormPhotoQuestion({
           <Text style={[styles.examplesLabel, { color: mutedColor }]}>EXEMPLOS</Text>
           <View style={styles.examplesRow}>
             {question.examples.map((url, i) => (
-              <Image key={i} source={{ uri: url }} style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} />
+              <Image key={i} source={{ uri: url }} style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} cachePolicy="memory-disk" />
             ))}
           </View>
         </View>

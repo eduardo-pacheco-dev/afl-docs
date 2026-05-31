@@ -9,6 +9,10 @@ export class ReportRepositoryImpl implements ReportRepository {
     return this.dataSource.getReports();
   }
 
+  async getReportById(id: string): Promise<Report | null> {
+    return this.dataSource.getReportById(id);
+  }
+
   async saveReport(report: Report): Promise<void> {
     return this.dataSource.saveReport(report);
   }

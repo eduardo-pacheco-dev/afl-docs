@@ -8,4 +8,8 @@ export interface Report {
   auditor: string;
   executor: string;
   client: string;
+  responsible: string;
+  progress: number;
+  approved: number;
+  total: number;
 }

@@ -7,7 +7,7 @@ function getDefaultReports(): Report[] {
   return [
     {
       id: '1',
-      title: 'SN-SSYSB6 – Auditoria Interna EHS',
+      title: 'SN-PRAC1 - Auditoria EHS',
       subtitle: 'NOKIA',
       initials: 'SN',
       status: 'Concluído',
@@ -15,6 +15,10 @@ function getDefaultReports(): Report[] {
       auditor: 'Eduardo Pacheco',
       executor: 'Higo Oliveira',
       client: 'TIM #140',
+      responsible: 'Joelson Gomes',
+      progress: 71,
+      approved: 49,
+      total: 69,
     },
     {
       id: '2',
@@ -26,6 +30,10 @@ function getDefaultReports(): Report[] {
       auditor: 'Maria Souza',
       executor: 'João Santos',
       client: 'VIVO #089',
+      responsible: 'João Santos',
+      progress: 45,
+      approved: 22,
+      total: 49,
     },
     {
       id: '3',
@@ -37,6 +45,10 @@ function getDefaultReports(): Report[] {
       auditor: 'Carlos Lima',
       executor: 'Ana Costa',
       client: 'CLARO #022',
+      responsible: 'Ana Costa',
+      progress: 10,
+      approved: 3,
+      total: 28,
     },
     {
       id: '4',
@@ -48,6 +60,10 @@ function getDefaultReports(): Report[] {
       auditor: 'Fernanda Rocha',
       executor: 'Pedro Alves',
       client: 'OI #315',
+      responsible: 'Pedro Alves',
+      progress: 100,
+      approved: 42,
+      total: 42,
     },
     {
       id: '5',
@@ -59,17 +75,22 @@ function getDefaultReports(): Report[] {
       auditor: 'Eduardo Pacheco',
       executor: 'Luciana Torres',
       client: 'TIM #140',
+      responsible: 'Luciana Torres',
+      progress: 60,
+      approved: 31,
+      total: 52,
     },
   ];
 }
 
 function isValidReport(data: unknown): data is Report[] {
   if (!Array.isArray(data) || data.length === 0) return false;
-  return 'subtitle' in data[0] && 'initials' in data[0] && 'status' in data[0];
+  return 'responsible' in data[0] && 'progress' in data[0];
 }
 
 export interface ReportDataSource {
   getReports(): Promise<Report[]>;
+  getReportById(id: string): Promise<Report | null>;
   saveReport(report: Report): Promise<void>;
   saveAll(reports: Report[]): Promise<void>;
 }
@@ -89,6 +110,11 @@ export class ReportLocalDataSource implements ReportDataSource {
     const defaults = getDefaultReports();
     await AsyncStorage.setItem(REPORTS_KEY, JSON.stringify(defaults));
     return defaults;
+  }
+
+  async getReportById(id: string): Promise<Report | null> {
+    const reports = await this.getReports();
+    return reports.find((r) => r.id === id) ?? null;
   }
 
   async saveReport(report: Report): Promise<void> {

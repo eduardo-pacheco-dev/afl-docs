@@ -17,6 +17,12 @@ export const statusConfig: Record<string, { bg: string; text: string; icon: stri
     icon: '#db2777',
     iconName: 'alert-circle-outline',
   },
+  'Reprovado': {
+    bg: '#fef2f2',
+    text: '#dc2626',
+    icon: '#dc2626',
+    iconName: 'close-circle-outline',
+  },
 };
 
 export function getStatusConfig(status: string) {

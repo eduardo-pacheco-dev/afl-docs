@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { Image } from 'expo-image';
+import { useEffect, useState } from 'react';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
 import { FormQuestion } from '@/src/domain/entities/report';
@@ -20,6 +20,19 @@ type FormPhotoQuestionProps = {
   onSubmit: () => void;
 };
 
+async function getLocalUri(url: string): Promise<string> {
+  if (Platform.OS === 'web') return url;
+  const { File, Paths, Directory } = await import('expo-file-system');
+  const filename = url.split('/').pop() ?? url.replace(/[^a-zA-Z0-9]/g, '_');
+  const dir = new Directory(Paths.document, 'examples');
+  if (!Paths.info(dir.uri).exists) await dir.create();
+  const file = new File(dir, filename);
+  try {
+    await File.downloadFileAsync(url, file);
+  } catch {}
+  return file.uri;
+}
+
 export function FormPhotoQuestion({
   question,
   photos,
@@ -33,6 +46,17 @@ export function FormPhotoQuestion({
   const theme = useColorScheme() ?? 'light';
   const textColor = Colors[theme].text;
   const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
+  const [localExamples, setLocalExamples] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!question.examples?.length) return;
+    let cancelled = false;
+    (async () => {
+      const local = await Promise.all(question.examples!.map(getLocalUri));
+      if (!cancelled) setLocalExamples(local);
+    })();
+    return () => { cancelled = true; };
+  }, [question.examples]);
 
   return (
     <View style={styles.block}>
@@ -49,8 +73,8 @@ export function FormPhotoQuestion({
         <View>
           <Text style={[styles.examplesLabel, { color: mutedColor }]}>EXEMPLOS</Text>
           <View style={styles.examplesRow}>
-            {question.examples.map((url, i) => (
-              <Image key={i} source={{ uri: url }} style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} cachePolicy="memory-disk" />
+            {(localExamples.length > 0 ? localExamples : question.examples).map((uri, i) => (
+              <Image key={i} source={{ uri }} style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} />
             ))}
           </View>
         </View>

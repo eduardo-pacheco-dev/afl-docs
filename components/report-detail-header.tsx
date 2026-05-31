@@ -1,4 +1,5 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Svg, { Circle, G } from 'react-native-svg';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -8,9 +9,12 @@ import type { Report } from '@/src/domain/entities/report';
 type ReportDetailHeaderProps = {
   report: Report;
   onSync?: () => void;
+  onDelete?: () => void;
+  onArchive?: () => void;
 };
 
-export function ReportDetailHeader({ report, onSync }: ReportDetailHeaderProps) {
+export function ReportDetailHeader({ report, onSync, onDelete, onArchive }: ReportDetailHeaderProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const theme = useColorScheme() ?? 'light';
   const textColor = Colors[theme].text;
   const iconColor = Colors[theme].icon;
@@ -68,11 +72,34 @@ export function ReportDetailHeader({ report, onSync }: ReportDetailHeaderProps) 
         </Text>
       </View>
 
-      {onSync && (
-        <TouchableOpacity style={[styles.syncBtn, { backgroundColor: syncBg }]} onPress={onSync}>
-          <Ionicons name="sync" size={22} color={iconColor} />
+      <View style={styles.actions}>
+        {onSync && (
+          <TouchableOpacity style={[styles.iconBtn, { backgroundColor: syncBg }]} onPress={onSync}>
+            <Ionicons name="sync" size={20} color={iconColor} />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity style={[styles.iconBtn, { backgroundColor: syncBg }]} onPress={() => setMenuOpen(true)}>
+          <Ionicons name="ellipsis-horizontal" size={20} color={iconColor} />
         </TouchableOpacity>
-      )}
+      </View>
+
+      <Modal visible={menuOpen} transparent animationType="fade" onRequestClose={() => setMenuOpen(false)}>
+        <Pressable style={styles.backdrop} onPress={() => setMenuOpen(false)} />
+        <View style={[styles.menu, { backgroundColor: bgColor, shadowColor: '#000' }]}>
+          {onDelete && (
+            <TouchableOpacity style={styles.menuItem} onPress={() => { setMenuOpen(false); onDelete(); }}>
+              <Ionicons name="trash-outline" size={20} color="#ef4444" />
+              <Text style={[styles.menuText, { color: '#ef4444' }]}>Deletar</Text>
+            </TouchableOpacity>
+          )}
+          {onArchive && (
+            <TouchableOpacity style={styles.menuItem} onPress={() => { setMenuOpen(false); onArchive(); }}>
+              <Ionicons name="archive-outline" size={20} color={textColor} />
+              <Text style={[styles.menuText, { color: textColor }]}>Arquivar</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -109,11 +136,41 @@ const styles = StyleSheet.create({
   counter: {
     fontSize: 13,
   },
-  syncBtn: {
-    width: 42,
-    height: 42,
+  actions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  iconBtn: {
+    width: 38,
+    height: 38,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  backdrop: {
+    flex: 1,
+  },
+  menu: {
+    position: 'absolute',
+    top: 80,
+    right: 16,
+    borderRadius: 14,
+    paddingVertical: 4,
+    minWidth: 170,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  menuText: {
+    fontSize: 15,
+    fontWeight: '600',
   },
 });

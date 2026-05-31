@@ -199,6 +199,13 @@ export function ReportForm() {
                               <Text style={[styles.uploadText, { color: mutedColor }]}>N/A</Text>
                             </TouchableOpacity>
                           </View>
+                          <TouchableOpacity
+                            style={[styles.submitBtn, { backgroundColor: theme === 'dark' ? '#0a7ea4' : '#0891b2' }]}
+                            activeOpacity={0.85}
+                          >
+                            <Ionicons name="send" size={18} color="#fff" />
+                            <Text style={styles.submitText}>Enviar</Text>
+                          </TouchableOpacity>
                         </View>
                       )}
                     </View>
@@ -333,6 +340,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffbe6',
     borderRadius: 10,
     padding: 2,
+  },
+  submitBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 15,
+    borderRadius: 14,
+    marginTop: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  submitText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '700',
   },
   uploadRow: {
     flexDirection: 'row',

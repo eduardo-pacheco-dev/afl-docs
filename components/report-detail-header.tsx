@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Animated, Easing, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -46,6 +46,21 @@ export function ReportDetailHeader({ report, syncing = false, onSync, onDelete, 
   const bgColor = theme === 'dark' ? '#1c1c1c' : '#ffffff';
   const syncBg = theme === 'dark' ? '#2c2c2c' : '#f0f0f0';
 
+  const totalItems = useMemo(
+    () => report.forms.reduce((sum, s) => sum + s.questions.length, 0),
+    [report.forms],
+  );
+
+  const approvedItems = useMemo(
+    () => report.forms.reduce(
+      (sum, s) => sum + s.questions.filter((q) => q.status === 'Aprovado').length,
+      0,
+    ),
+    [report.forms],
+  );
+
+  const progress = totalItems > 0 ? Math.round((approvedItems / totalItems) * 100) : 0;
+
   const menuItems = [
     ...(onArchive ? [{ label: 'Arquivar', icon: 'archive-outline' as const, onPress: onArchive }] : []),
     ...(onDelete ? [{ label: 'Deletar', icon: 'trash-outline' as const, color: '#ef4444', onPress: onDelete }] : []),
@@ -53,7 +68,7 @@ export function ReportDetailHeader({ report, syncing = false, onSync, onDelete, 
 
   return (
     <View style={[styles.container, { backgroundColor: bgColor }]}>
-      <CircularProgress progress={report.progress} />
+      <CircularProgress progress={progress} />
 
       <View style={styles.info}>
         <Text style={[styles.title, { color: textColor }]} numberOfLines={1}>
@@ -63,7 +78,7 @@ export function ReportDetailHeader({ report, syncing = false, onSync, onDelete, 
           {report.subtitle} · {report.responsible}
         </Text>
         <Text style={[styles.counter, { color: iconColor }]}>
-          {report.approved} de {report.total} itens aprovados
+          {approvedItems} de {totalItems} itens aprovados
         </Text>
       </View>
 

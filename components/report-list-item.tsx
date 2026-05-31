@@ -1,13 +1,15 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
 import { StatusBadge } from '@/components/status-badge';
 import type { Report } from '@/src/domain/entities/report';
 
-type ReportListItemProps = Report;
+type ReportListItemProps = Report & {
+  onPress?: () => void;
+};
 
-export function ReportListItem({
+export function ReportListItem({ onPress,
   title,
   subtitle,
   initials,
@@ -21,7 +23,11 @@ export function ReportListItem({
   const bgColor = theme === 'dark' ? '#1c1c1c' : '#ffffff';
 
   return (
-    <View style={[styles.row, { backgroundColor: bgColor, borderColor }]}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={onPress}
+      style={[styles.row, { backgroundColor: bgColor, borderColor }]}
+    >
       <View style={styles.avatar}>
         <Text style={styles.avatarText}>{initials}</Text>
       </View>
@@ -42,7 +48,7 @@ export function ReportListItem({
           <Text style={[styles.dateText, { color: iconColor }]}>{date}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

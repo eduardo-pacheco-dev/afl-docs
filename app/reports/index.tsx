@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
 import { ReportCard } from '@/components/report-card';
 import { ReportListItem } from '@/components/report-list-item';
@@ -41,8 +42,10 @@ export default function ReportsListScreen() {
   }, [search, reports]);
 
   const renderItem = useCallback(
-    ({ item }: { item: Report }) =>
-      viewMode === 'card' ? <ReportCard {...item} /> : <ReportListItem {...item} />,
+    ({ item }: { item: Report }) => {
+      const props = { ...item, onPress: () => router.push(`/reports/${item.id}` as any) };
+      return viewMode === 'card' ? <ReportCard {...props} /> : <ReportListItem {...props} />;
+    },
     [viewMode],
   );
 

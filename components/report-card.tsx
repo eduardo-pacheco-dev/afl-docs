@@ -1,13 +1,15 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
 import { StatusBadge } from '@/components/status-badge';
 import type { Report } from '@/src/domain/entities/report';
 
-type ReportCardProps = Report;
+type ReportCardProps = Report & {
+  onPress?: () => void;
+};
 
-export function ReportCard({
+export function ReportCard({ onPress,
   title,
   subtitle,
   initials,
@@ -24,7 +26,11 @@ export function ReportCard({
   const cardBg = theme === 'dark' ? '#1c1c1c' : '#ffffff';
 
   return (
-    <View style={[styles.card, { backgroundColor: cardBg, borderColor }]}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={onPress}
+      style={[styles.card, { backgroundColor: cardBg, borderColor }]}
+    >
       <View style={styles.header}>
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>{initials}</Text>
@@ -68,7 +74,7 @@ export function ReportCard({
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

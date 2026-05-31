@@ -29,13 +29,15 @@
           "title": "TÉCNICO 2",
           "questions": [
             { "type": "photo", "title": "Foto da placa de obra", "status": "Aguardando", "description": "Registre a placa de identificação da obra com visibilidade total.", "examples": ["https://picsum.photos/600/600?random=2"] },
-            { "type": "photo", "title": "Foto do entorno", "status": "Aguardando", "description": "Capture uma vista panorâmica do entorno da obra.", "examples": ["https://picsum.photos/600/600?random=3"] }
+            { "type": "photo", "title": "Foto do entorno", "status": "Aguardando", "description": "Capture uma vista panorâmica do entorno da obra.", "examples": ["https://picsum.photos/600/600?random=3"] },
+            { "type": "radio", "title": "Condição do local", "status": "Aguardando", "description": "Avalie a condição geral do local de trabalho do técnico.", "options": ["Adequada", "Regular", "Inadequada", "Crítica"] }
           ]
         },
         {
           "title": "DOCUMENTAÇÃO",
           "questions": [
             { "type": "text", "title": "Número do documento", "status": "Pendente", "description": "Informe o número do documento de segurança para rastreamento e auditoria.", "placeholder": "Ex: DOC-2026-001" },
+            { "type": "file", "title": "Anexar documentação complementar", "status": "Pendente", "description": "Anexe documentos complementares como ART, notas fiscais ou relatórios técnicos." },
             { "type": "checkbox", "title": "Tipos de documentos anexados", "status": "Pendente", "description": "Selecione quais tipos de documentos foram anexados a esta auditoria.", "options": ["ART", "ASO", "PCMAT", "PPRA", "Laudo Técnico"] },
             { "type": "photo", "title": "Foto do documento assinado", "description": "Fotografe o documento completo com todas as assinaturas visíveis.", "examples": ["https://picsum.photos/600/600?random=4"] }
           ]
@@ -65,7 +67,9 @@
             { "type": "photo", "title": "Foto do cinto de segurança", "status": "Aguardando", "description": "Fotografe o cinto de segurança tipo paraquedista corretamente afivelado.", "examples": ["https://picsum.photos/600/600?random=6"] },
             { "type": "text", "title": "Observações", "description": "Detalhe o estado de conservação e conformidade dos Equipamentos de Proteção Individual.", "placeholder": "Descreva o estado dos EPIs..." },
             { "type": "yesno", "title": "Cinto de segurança com certificação válida?", "status": "Pendente", "description": "O cinto de segurança tipo paraquedista possui certificação dentro do prazo de validade?" },
-            { "type": "checkbox", "title": "EPIs disponíveis no local", "status": "Concluído", "description": "Marque todos os EPIs que estavam disponíveis e em condições de uso no momento da vistoria.", "options": ["Capacete", "Cinto de segurança", "Luvas", "Óculos de proteção", "Protetor auricular", "Máscara respiratória"] }
+            { "type": "checkbox", "title": "EPIs disponíveis no local", "status": "Concluído", "description": "Marque todos os EPIs que estavam disponíveis e em condições de uso no momento da vistoria.", "options": ["Capacete", "Cinto de segurança", "Luvas", "Óculos de proteção", "Protetor auricular", "Máscara respiratória"] },
+            { "type": "radio", "title": "Nível de conformidade", "status": "Pendente", "description": "Classifique o nível de conformidade dos EPIs encontrados no local.", "options": ["Conforme", "Não conforme", "Não se aplica"] },
+            { "type": "file", "title": "Anexar certificados dos EPIs", "status": "Aguardando", "description": "Anexe os certificados de conformidade dos EPIs (CA, laudos, etc.)." }
           ]
         }
       ]

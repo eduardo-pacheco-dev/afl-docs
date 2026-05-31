@@ -7,6 +7,9 @@ import { FormTextQuestion } from './question/text';
 import { FormPhotoQuestion } from './question/photo';
 import { BinarySegmentedControl } from './question/yesno';
 import { FormCheckboxQuestion } from './question/checkbox';
+import { FormRadioQuestion } from './question/radio';
+import { FormFileQuestion } from './question/file';
+import type { FormFile } from './question/file';
 import { FormSubmitButton } from './form-submit-button';
 import { FormAnswer } from '@/src/domain/entities/form-answer';
 import type { FormSection as FormSectionType } from '@/src/domain/entities/report';
@@ -40,6 +43,8 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
   const [photos, setPhotos] = useState<Record<string, Photo[]>>({});
   const [yesnoAnswers, setYesnoAnswers] = useState<Record<string, boolean | null>>({});
   const [checkboxAnswers, setCheckboxAnswers] = useState<Record<string, string[]>>({});
+  const [radioAnswers, setRadioAnswers] = useState<Record<string, string | null>>({});
+  const [fileAnswers, setFileAnswers] = useState<Record<string, FormFile[]>>({});
 
   const toggleSection = (index: number) => {
     setExpandedSections((prev) => ({ ...prev, [index]: !prev[index] }));
@@ -55,6 +60,14 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
 
   const handleCheckboxChange = (key: string, selected: string[]) => {
     setCheckboxAnswers((prev) => ({ ...prev, [key]: selected }));
+  };
+
+  const handleRadioChange = (key: string, value: string) => {
+    setRadioAnswers((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleFileChange = (key: string, files: FormFile[]) => {
+    setFileAnswers((prev) => ({ ...prev, [key]: files }));
   };
 
   const pickImage = async (sectionIdx: number, qIdx: number) => {
@@ -150,6 +163,27 @@ export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
                     options={q.options ?? []}
                     value={checkboxAnswers[qKey] ?? []}
                     onChange={(selected) => handleCheckboxChange(qKey, selected)}
+                    onSubmit={handleSubmit}
+                  />
+                )}
+                {q.type === 'radio' && (
+                  <FormRadioQuestion
+                    title={q.title}
+                    status={q.status}
+                    description={q.description}
+                    options={q.options ?? []}
+                    value={radioAnswers[qKey] ?? null}
+                    onChange={(val) => handleRadioChange(qKey, val)}
+                    onSubmit={handleSubmit}
+                  />
+                )}
+                {q.type === 'file' && (
+                  <FormFileQuestion
+                    title={q.title}
+                    status={q.status}
+                    description={q.description}
+                    files={fileAnswers[qKey] ?? []}
+                    onChange={(files) => handleFileChange(qKey, files)}
                     onSubmit={handleSubmit}
                   />
                 )}

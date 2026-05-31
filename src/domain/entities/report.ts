@@ -1,5 +1,5 @@
 export interface FormQuestion {
-  type: 'text' | 'photo' | 'yesno' | 'checkbox';
+  type: 'text' | 'photo' | 'yesno' | 'checkbox' | 'radio' | 'file';
   title: string;
   status?: string;
   placeholder?: string;

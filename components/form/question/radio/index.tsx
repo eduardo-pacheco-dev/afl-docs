@@ -4,31 +4,24 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
 import { FormSubmitButton } from '../../form-submit-button';
 
-type FormCheckboxQuestionProps = {
+type FormRadioQuestionProps = {
   title: string;
   status?: string;
   description?: string;
   options: string[];
-  value: string[];
-  onChange: (selected: string[]) => void;
+  value: string | null;
+  onChange: (value: string) => void;
   onSubmit: () => void;
 };
 
-export function FormCheckboxQuestion({ title, status, description, options, value, onChange, onSubmit }: FormCheckboxQuestionProps) {
+export function FormRadioQuestion({ title, status, description, options, value, onChange, onSubmit }: FormRadioQuestionProps) {
   const theme = useColorScheme() ?? 'light';
   const textColor = Colors[theme].text;
   const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
   const inputBg = theme === 'dark' ? '#2c2c2c' : '#f8f8f8';
   const tint = Colors[theme].tint;
   const selectedBg = theme === 'dark' ? '#1a2e3a' : '#f0f9ff';
-
-  const toggle = (opt: string) => {
-    if (value.includes(opt)) {
-      onChange(value.filter((v) => v !== opt));
-    } else {
-      onChange([...value, opt]);
-    }
-  };
+  const selectedBorder = theme === 'dark' ? '#0a7ea4' : tint;
 
   return (
     <View style={styles.block}>
@@ -43,18 +36,18 @@ export function FormCheckboxQuestion({ title, status, description, options, valu
       {description && <Text style={[styles.description, { color: mutedColor }]}>{description}</Text>}
 
       {options.map((opt, i) => {
-        const checked = value.includes(opt);
+        const selected = value === opt;
         return (
           <TouchableOpacity
             key={i}
-            style={[styles.option, { backgroundColor: inputBg }, checked && { backgroundColor: selectedBg }]}
+            style={[styles.option, { backgroundColor: inputBg }, selected && { backgroundColor: selectedBg, borderColor: selectedBorder }]}
             activeOpacity={0.7}
-            onPress={() => toggle(opt)}
+            onPress={() => onChange(opt)}
           >
             <Ionicons
-              name={checked ? 'checkbox' : 'square-outline'}
+              name={selected ? 'radio-button-on' : 'radio-button-off'}
               size={22}
-              color={checked ? tint : mutedColor}
+              color={selected ? tint : mutedColor}
             />
             <Text style={[styles.optionText, { color: textColor }]}>{opt}</Text>
           </TouchableOpacity>
@@ -104,6 +97,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
   optionText: {
     fontSize: 15,

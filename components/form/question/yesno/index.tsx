@@ -18,6 +18,8 @@ export function BinarySegmentedControl({ title, status, description, value, onCh
   const textColor = Colors[theme].text;
   const mutedColor = theme === 'dark' ? '#9BA1A6' : '#8e8e93';
   const inputBg = theme === 'dark' ? '#2c2c2c' : '#f8f8f8';
+  const yesBg = theme === 'dark' ? '#0d2818' : '#f0fdf4';
+  const noBg = theme === 'dark' ? '#2a1011' : '#fef2f2';
 
   return (
     <View style={styles.block}>
@@ -33,7 +35,7 @@ export function BinarySegmentedControl({ title, status, description, value, onCh
 
       <View style={styles.row}>
         <TouchableOpacity
-          style={[styles.option, { backgroundColor: inputBg }, value === true && styles.optionSelected]}
+          style={[styles.option, { backgroundColor: inputBg }, value === true && { backgroundColor: yesBg, borderColor: '#16a34a' }]}
           activeOpacity={0.7}
           onPress={() => onChange(true)}
         >
@@ -46,7 +48,7 @@ export function BinarySegmentedControl({ title, status, description, value, onCh
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.option, { backgroundColor: inputBg }, value === false && styles.optionNoSelected]}
+          style={[styles.option, { backgroundColor: inputBg }, value === false && { backgroundColor: noBg, borderColor: '#dc2626' }]}
           activeOpacity={0.7}
           onPress={() => onChange(false)}
         >
@@ -109,14 +111,6 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     borderWidth: 2,
     borderColor: 'transparent',
-  },
-  optionSelected: {
-    borderColor: '#16a34a',
-    backgroundColor: '#f0fdf4',
-  },
-  optionNoSelected: {
-    borderColor: '#dc2626',
-    backgroundColor: '#fef2f2',
   },
   optionText: {
     fontSize: 16,

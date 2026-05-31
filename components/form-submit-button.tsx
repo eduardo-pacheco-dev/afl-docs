@@ -4,9 +4,10 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 
 type FormSubmitButtonProps = {
   onPress: () => void;
+  label?: string;
 };
 
-export function FormSubmitButton({ onPress }: FormSubmitButtonProps) {
+export function FormSubmitButton({ onPress, label = 'Enviar' }: FormSubmitButtonProps) {
   const theme = useColorScheme() ?? 'light';
 
   return (
@@ -16,7 +17,7 @@ export function FormSubmitButton({ onPress }: FormSubmitButtonProps) {
       onPress={onPress}
     >
       <Ionicons name="send" size={18} color="#fff" />
-      <Text style={styles.text}>Enviar</Text>
+      <Text style={styles.text}>{label}</Text>
     </TouchableOpacity>
   );
 }

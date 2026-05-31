@@ -158,6 +158,7 @@ export function ReportForm({ reportId = '' }: { reportId?: string }) {
           })}
         </FormSection>
       ))}
+      <FormSubmitButton onPress={handleSubmit} label="Enviar Todos" />
     </ScrollView>
   );
 }

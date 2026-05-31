@@ -1,10 +1,11 @@
 import { ThemedView } from '@/components/themed-view';
+import { router } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default function ReportsScreen() {
   return (
     <ThemedView style={styles.container}>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/reports')}>
         <Text style={styles.buttonText}>Relatórios</Text>
       </TouchableOpacity>
     </ThemedView>

@@ -1,3 +1,15 @@
+export interface FormQuestion {
+  type: 'text' | 'photo';
+  title: string;
+  status?: string;
+  placeholder?: string;
+}
+
+export interface FormSection {
+  title: string;
+  questions: FormQuestion[];
+}
+
 export interface Report {
   id: string;
   title: string;
@@ -12,4 +24,5 @@ export interface Report {
   progress: number;
   approved: number;
   total: number;
+  forms: FormSection[];
 }

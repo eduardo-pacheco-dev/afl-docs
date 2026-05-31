@@ -9,30 +9,12 @@ import { FormPhotoThumb } from '@/components/form-photo-thumb';
 import { FormUploadActions } from '@/components/form-upload-actions';
 import { FormSubmitButton } from '@/components/form-submit-button';
 import { FormAnswer } from '@/src/domain/entities/form-answer';
+import type { FormSection } from '@/src/domain/entities/report';
 import { FormLocalDataSource } from '@/src/data/datasources/form-datasource';
 import { FormRepositoryImpl } from '@/src/data/repositories/form-repository-impl';
 import { SaveFormAnswersUseCase } from '@/src/domain/usecases/save-form-answers';
 
 type Photo = { uri: string; synced: boolean };
-
-type FormSection = {
-  title: string;
-  questions: {
-    type: 'text' | 'photo';
-    title: string;
-    status?: string;
-    placeholder?: string;
-  }[];
-};
-
-const defaultSections: FormSection[] = [
-  {
-    title: 'TÉCNICO 1',
-    questions: [
-      { type: 'photo', title: 'Foto do capacete', status: 'Aguardando' },
-    ],
-  },
-];
 
 const saveFormAnswersUseCase = new SaveFormAnswersUseCase(
   new FormRepositoryImpl(new FormLocalDataSource()),
@@ -46,7 +28,12 @@ function addPhotoToState(
   setPhotos((prev) => ({ ...prev, [key]: [...(prev[key] ?? []), { uri, synced: false }] }));
 }
 
-export function ReportForm({ reportId = '' }: { reportId?: string }) {
+type ReportFormProps = {
+  reportId?: string;
+  sections?: FormSection[];
+};
+
+export function ReportForm({ reportId = '', sections = [] }: ReportFormProps) {
   const theme = useColorScheme() ?? 'light';
   const [expandedSections, setExpandedSections] = useState<Record<number, boolean>>({ 0: true });
   const [textAnswers, setTextAnswers] = useState<Record<string, string>>({});
@@ -105,7 +92,7 @@ export function ReportForm({ reportId = '' }: { reportId?: string }) {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: bgColor }]} contentContainerStyle={styles.content}>
-      {defaultSections.map((section, sIdx) => (
+      {sections.map((section, sIdx) => (
         <FormSection key={sIdx} title={section.title} expanded={expandedSections[sIdx] ?? false} onToggle={() => toggleSection(sIdx)}>
           {section.questions.map((q, qIdx) => {
             const qKey = `${sIdx}-${qIdx}`;

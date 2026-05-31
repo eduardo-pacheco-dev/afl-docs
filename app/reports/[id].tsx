@@ -41,7 +41,7 @@ export default function ReportDetailScreen() {
         selected={selectedStatuses}
         onToggle={toggleStatus}
       />
-      <ReportForm reportId={id} />
+      <ReportForm reportId={id} sections={report.forms} />
     </ThemedView>
   );
 }

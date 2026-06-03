@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import { Report } from '@/src/domain/entities/report';
 import { ReportDataSource } from './report-datasource';
 
-const BASE_URL = Platform.OS === 'web' ? 'http://localhost:3001' : 'http://192.168.100.13:3001';
+const BASE_URL = Platform.OS === 'web' ? 'http://localhost:8000' : 'http://192.168.100.13:8000';
 
 export class ReportApiDataSource implements ReportDataSource {
   async getReports(): Promise<Report[]> {

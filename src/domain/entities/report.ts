@@ -1,32 +1,47 @@
-export interface FormQuestion {
-  type: 'text' | 'photo' | 'yesno' | 'checkbox' | 'radio' | 'file';
-  title: string;
-  status?: string;
-  placeholder?: string;
-  description?: string;
-  examples?: string[];
-  options?: string[];
+export interface QuestionAnswer {
+  value: string | Record<string, unknown> | null;
 }
 
-export interface FormSection {
+export interface Question {
+  id: number;
+  label: string;
+  type: string;
+  options?: unknown;
+  required: boolean;
+  order: number;
+  status?: string;
+  description?: string;
+  answer?: QuestionAnswer | null;
+}
+
+export interface Section {
+  id: number;
   title: string;
-  questions: FormQuestion[];
+  description?: string;
+  order: number;
+  questions: Question[];
+}
+
+export interface Form {
+  id: number;
+  title: string;
+  description?: string;
 }
 
 export interface Report {
-  id: string;
-  hash: string;
+  id: number;
+  uuid: string;
   title: string;
-  subtitle: string;
-  initials: string;
+  description?: string;
   status: string;
-  date: string;
-  auditor: string;
-  executor: string;
-  client: string;
-  responsible: string;
-  progress: number;
-  approved: number;
-  total: number;
-  forms: FormSection[];
+  config?: Record<string, unknown>;
+  site_id?: number;
+  end_id?: number;
+  operadora?: string;
+  tecnico_nome?: string;
+  form?: Form;
+  reports: Section[];
+  questions_without_section?: Question[];
+  created_at: string;
+  updated_at: string;
 }

@@ -12,7 +12,7 @@ import { FormFileQuestion } from './question/file';
 import type { FormFile } from './question/file';
 import { FormSubmitButton } from './form-submit-button';
 import { FormAnswer } from '@/src/domain/entities/form-answer';
-import type { FormSection as FormSectionType } from '@/src/domain/entities/report';
+import type { Section as SectionType } from '@/src/domain/entities/report';
 import { FormLocalDataSource } from '@/src/data/datasources/form-datasource';
 import { FormRepositoryImpl } from '@/src/data/repositories/form-repository-impl';
 import { SaveFormAnswersUseCase } from '@/src/domain/usecases/save-form-answers';
@@ -33,7 +33,7 @@ function addPhotoToState(
 
 type ReportFormProps = {
   reportId?: string;
-  sections?: FormSectionType[];
+  sections?: SectionType[];
   selectedStatuses?: string[];
 };
 
@@ -133,10 +133,10 @@ export function ReportForm({ reportId = '', sections = [], selectedStatuses = []
               <View key={qIdx} style={styles.questionBlock}>
                 {q.type === 'text' && (
                   <FormTextQuestion
-                    title={q.title}
+                    title={q.label}
                     status={q.status}
                     description={q.description}
-                    placeholder={q.placeholder}
+                    placeholder={typeof q.answer?.value === 'string' ? q.answer.value : undefined}
                     value={textAnswers[qKey] ?? ''}
                     onChange={(val) => handleTextChange(qKey, val)}
                     onSubmit={handleSubmit}
@@ -154,9 +154,9 @@ export function ReportForm({ reportId = '', sections = [], selectedStatuses = []
                     onSubmit={handleSubmit}
                   />
                 )}
-                {q.type === 'yesno' && (
+                {(q.type === 'yesno' || q.type === 'binary_segmented_control') && (
                   <BinarySegmentedControl
-                    title={q.title}
+                    title={q.label}
                     status={q.status}
                     description={q.description}
                     value={yesnoAnswers[qKey] ?? null}
@@ -166,10 +166,10 @@ export function ReportForm({ reportId = '', sections = [], selectedStatuses = []
                 )}
                 {q.type === 'checkbox' && (
                   <FormCheckboxQuestion
-                    title={q.title}
+                    title={q.label}
                     status={q.status}
                     description={q.description}
-                    options={q.options ?? []}
+                    options={(Array.isArray(q.options) ? q.options : []) as string[]}
                     value={checkboxAnswers[qKey] ?? []}
                     onChange={(selected) => handleCheckboxChange(qKey, selected)}
                     onSubmit={handleSubmit}
@@ -177,10 +177,10 @@ export function ReportForm({ reportId = '', sections = [], selectedStatuses = []
                 )}
                 {q.type === 'radio' && (
                   <FormRadioQuestion
-                    title={q.title}
+                    title={q.label}
                     status={q.status}
                     description={q.description}
-                    options={q.options ?? []}
+                    options={(Array.isArray(q.options) ? q.options : []) as string[]}
                     value={radioAnswers[qKey] ?? null}
                     onChange={(val) => handleRadioChange(qKey, val)}
                     onSubmit={handleSubmit}
@@ -188,7 +188,7 @@ export function ReportForm({ reportId = '', sections = [], selectedStatuses = []
                 )}
                 {q.type === 'file' && (
                   <FormFileQuestion
-                    title={q.title}
+                    title={q.label}
                     status={q.status}
                     description={q.description}
                     files={fileAnswers[qKey] ?? []}

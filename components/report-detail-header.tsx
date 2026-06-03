@@ -46,18 +46,17 @@ export function ReportDetailHeader({ report, syncing = false, onSync, onDelete, 
   const bgColor = theme === 'dark' ? '#1c1c1c' : '#ffffff';
   const syncBg = theme === 'dark' ? '#2c2c2c' : '#f0f0f0';
 
-  const totalItems = useMemo(
-    () => report.forms.reduce((sum, s) => sum + s.questions.length, 0),
-    [report.forms],
+  const allQuestions = useMemo(
+    () => [
+      ...report.reports.flatMap((s) => s.questions),
+      ...(report.questions_without_section ?? []),
+    ],
+    [report.reports, report.questions_without_section],
   );
 
-  const approvedItems = useMemo(
-    () => report.forms.reduce(
-      (sum, s) => sum + s.questions.filter((q) => q.status === 'Aprovado').length,
-      0,
-    ),
-    [report.forms],
-  );
+  const totalItems = allQuestions.length;
+
+  const approvedItems = allQuestions.filter((q) => q.status === 'Aprovado').length;
 
   const progress = totalItems > 0 ? Math.round((approvedItems / totalItems) * 100) : 0;
 
@@ -75,7 +74,7 @@ export function ReportDetailHeader({ report, syncing = false, onSync, onDelete, 
           {report.title}
         </Text>
         <Text style={[styles.subtitle, { color: iconColor }]} numberOfLines={1}>
-          {report.subtitle} · {report.responsible}
+          {report.form?.title ?? report.description ?? ''} · {report.tecnico_nome ?? ''}
         </Text>
         <Text style={[styles.counter, { color: iconColor }]}>
           {approvedItems} de {totalItems} itens aprovados

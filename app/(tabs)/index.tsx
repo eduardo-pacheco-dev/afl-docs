@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { ThemedView } from '@/components/themed-view';
@@ -22,20 +22,27 @@ export default function ReportsScreen() {
   const theme = useColorScheme() ?? 'light';
   const [hash, setHash] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const inputRef = useRef<TextInput>(null);
 
   const handleAccess = async () => {
     const code = hash.trim();
     if (code.length !== CHAR_COUNT) return;
+    setErrorMsg(null);
     setLoading(true);
-    const report = await getReportByHashUseCase.execute(code);
-    if (report) {
-      await saveReportUseCase.execute(report);
+    try {
+      const report = await getReportByHashUseCase.execute(code);
+      if (report) {
+        await saveReportUseCase.execute(report);
+        setLoading(false);
+        router.push(`/reports/${report.id}` as any);
+      } else {
+        setLoading(false);
+        setErrorMsg(`Nenhum formulário encontrado com o código ${code}.`);
+      }
+    } catch (e) {
       setLoading(false);
-      router.push(`/reports/${report.id}` as any);
-    } else {
-      setLoading(false);
-      Alert.alert('Não encontrado', `Nenhum formulário com o código ${code}.`);
+      setErrorMsg('Erro de conexão. Verifique sua conexão e tente novamente.');
     }
   };
 
@@ -89,15 +96,23 @@ export default function ReportsScreen() {
         keyboardType="default"
       />
 
-      <TouchableOpacity
-        style={[styles.accessBtn, { opacity: hash.length === CHAR_COUNT ? 1 : 0.4 }]}
-        activeOpacity={0.85}
+      <Pressable
+        style={({ pressed }) => [
+          styles.accessBtn,
+          {
+            opacity: hash.length === CHAR_COUNT && !loading ? (pressed ? 0.8 : 1) : 0.4,
+          },
+        ]}
         onPress={handleAccess}
         disabled={hash.length !== CHAR_COUNT || loading}
       >
         <Ionicons name="arrow-forward" size={20} color="#fff" />
         <Text style={styles.accessBtnText}>{loading ? 'Buscando...' : 'Acessar'}</Text>
-      </TouchableOpacity>
+      </Pressable>
+
+      {errorMsg && (
+        <Text style={[styles.errorText, { color: '#dc2626' }]}>{errorMsg}</Text>
+      )}
 
       <View style={styles.divider}>
         <View style={[styles.dividerLine, { backgroundColor: dotBg }]} />
@@ -168,6 +183,7 @@ const styles = StyleSheet.create({
     width: 1,
     height: 1,
     opacity: 0,
+    pointerEvents: 'none',
   },
   accessBtn: {
     flexDirection: 'row',
@@ -187,6 +203,11 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
     fontWeight: '700',
+  },
+  errorText: {
+    textAlign: 'center',
+    fontSize: 14,
+    marginTop: 12,
   },
   divider: {
     flexDirection: 'row',

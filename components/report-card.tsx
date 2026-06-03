@@ -11,14 +11,19 @@ type ReportCardProps = Report & {
 
 export function ReportCard({ onPress,
   title,
-  subtitle,
-  initials,
+  form,
+  description,
   status,
-  date,
-  auditor,
-  executor,
-  client,
+  created_at,
+  operadora,
+  tecnico_nome,
 }: ReportCardProps) {
+  const subtitle = form?.title ?? description ?? '';
+  const initials = (title ?? '').substring(0, 2).toUpperCase();
+  const date = new Date(created_at ?? Date.now()).toLocaleDateString('pt-BR');
+  const auditor = '';
+  const executor = tecnico_nome ?? '';
+  const client = operadora ?? '';
   const theme = useColorScheme() ?? 'light';
   const iconColor = Colors[theme].icon;
   const textColor = Colors[theme].text;

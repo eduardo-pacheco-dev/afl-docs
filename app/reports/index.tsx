@@ -49,10 +49,9 @@ export default function ReportsListScreen() {
       result = result.filter(
         (r) =>
           r.title.toLowerCase().includes(q) ||
-          r.subtitle.toLowerCase().includes(q) ||
-          r.auditor.toLowerCase().includes(q) ||
-          r.executor.toLowerCase().includes(q) ||
-          r.client.toLowerCase().includes(q),
+          (r.form?.title ?? r.description ?? '').toLowerCase().includes(q) ||
+          (r.tecnico_nome ?? '').toLowerCase().includes(q) ||
+          (r.operadora ?? '').toLowerCase().includes(q),
       );
     }
     if (selectedStatuses.length > 0) {
@@ -138,7 +137,7 @@ export default function ReportsListScreen() {
 
       <FlatList
         data={filtered}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         contentContainerStyle={[styles.list, reports.length === 0 && styles.listEmpty]}
         renderItem={renderItem}
         refreshing={refreshing}

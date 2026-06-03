@@ -11,11 +11,14 @@ type ReportListItemProps = Report & {
 
 export function ReportListItem({ onPress,
   title,
-  subtitle,
-  initials,
+  form,
+  description,
   status,
-  date,
+  created_at,
 }: ReportListItemProps) {
+  const subtitle = form?.title ?? description ?? '';
+  const initials = title.substring(0, 2).toUpperCase();
+  const date = new Date(created_at).toLocaleDateString('pt-BR');
   const theme = useColorScheme() ?? 'light';
   const textColor = Colors[theme].text;
   const iconColor = Colors[theme].icon;

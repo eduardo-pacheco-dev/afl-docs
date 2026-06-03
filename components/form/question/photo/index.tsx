@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
-import { FormQuestion } from '@/src/domain/entities/report';
+import { Question } from '@/src/domain/entities/report';
 import { getStatusConfig } from '@/constants/status';
 import { FormPhotoThumb } from './form-photo-thumb';
 import { FormUploadActions } from './form-upload-actions';
@@ -12,7 +12,7 @@ import { ImagePreview } from '@/components/image-preview';
 type Photo = { uri: string; synced: boolean };
 
 type FormPhotoQuestionProps = {
-  question: FormQuestion;
+  question: Question;
   photos: Photo[];
   description?: string;
   onGallery: () => void;
@@ -53,20 +53,22 @@ export function FormPhotoQuestion({
   const showSubmit = question.status !== 'Em avaliação' && question.status !== 'Aprovado';
   const readOnly = !showSubmit;
 
+  const examples = (question as any).examples as string[] | undefined;
+
   useEffect(() => {
-    if (!question.examples?.length) return;
+    if (!examples?.length) return;
     let cancelled = false;
     (async () => {
-      const local = await Promise.all(question.examples!.map(getLocalUri));
+      const local = await Promise.all(examples.map(getLocalUri));
       if (!cancelled) setLocalExamples(local);
     })();
     return () => { cancelled = true; };
-  }, [question.examples]);
+  }, [examples]);
 
   return (
     <View style={styles.block}>
       <View style={styles.header}>
-        <Text style={[styles.title, { color: textColor }]}>{question.title}</Text>
+        <Text style={[styles.title, { color: textColor }]}>{question.label}</Text>
         {question.status && (
           <View style={[styles.badge, { backgroundColor: getStatusConfig(question.status).bg }]}>
             <Text style={[styles.badgeText, { color: getStatusConfig(question.status).text }]}>{question.status}</Text>
@@ -74,12 +76,12 @@ export function FormPhotoQuestion({
         )}
       </View>
       {description && <Text style={[styles.description, { color: mutedColor }]}>{description}</Text>}
-      {question.examples && question.examples.length > 0 && (
+      {examples && examples.length > 0 && (
         <View>
           <Text style={[styles.examplesLabel, { color: mutedColor }]}>EXEMPLOS</Text>
           <View style={styles.examplesRow}>
-            {(localExamples.length > 0 ? localExamples : question.examples).map((uri, i) => (
-              <Pressable key={i} onPress={() => setPreview({ uris: localExamples.length > 0 ? localExamples : question.examples!, index: i })}>
+            {(localExamples.length > 0 ? localExamples : examples).map((uri, i) => (
+              <Pressable key={i} onPress={() => setPreview({ uris: localExamples.length > 0 ? localExamples : examples, index: i })}>
                 <Image source={{ uri }} style={[styles.exampleThumb, { borderColor: theme === 'dark' ? '#3a3a3a' : '#d1d1d6' }]} />
               </Pressable>
             ))}

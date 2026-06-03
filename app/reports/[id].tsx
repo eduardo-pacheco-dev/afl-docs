@@ -44,7 +44,7 @@ export default function ReportDetailScreen() {
     const doDelete = () => {
       if (!report) return;
       localRepository
-        .deleteReportById(report.id)
+        .deleteReportById(String(report.id))
         .then(() => router.back())
         .catch(() => Alert.alert('Erro', 'Não foi possível deletar o relatório.'));
     };
@@ -69,7 +69,7 @@ export default function ReportDetailScreen() {
     if (!report || syncing) return;
     setSyncing(true);
     try {
-      const fresh = await apiRepository.getReportById(report.id);
+      const fresh = await apiRepository.getReportById(String(report.id));
       if (!fresh) {
         Alert.alert('Não encontrado', 'Relatório não encontrado na API.');
         return;
@@ -96,7 +96,7 @@ export default function ReportDetailScreen() {
         selected={selectedStatuses}
         onToggle={toggleStatus}
       />
-      <ReportForm reportId={id} sections={report.forms} selectedStatuses={selectedStatuses} />
+      <ReportForm reportId={id} sections={report.reports} selectedStatuses={selectedStatuses} />
     </ThemedView>
   );
 }
